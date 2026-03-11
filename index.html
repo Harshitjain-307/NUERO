@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neurotherapy Home Care - Delhi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX support in browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body class="bg-[#f5f8fc]">
+    <div id="root"></div>
+
+    <script type="text/babel">
+      function NeurotherapyHomeCareWebsite() {
+        const reviews = [
+          {
+            title: 'Back Pain Relief',
+            text: '“After 4 sessions, my back pain is almost gone. Thank you Himanshu ji!”',
+            author: '— Ramesh K.',
+          },
+          {
+            title: 'Sciatica Pain',
+            text: '“I was suffering from sciatica for months. Himanshu’s therapy really helped me.”',
+            author: '— Anita S.',
+          },
+          {
+            title: 'Knee Pain',
+            text: '“My knee pain reduced a lot after the treatment. Highly recommend!”',
+            author: '— Sunil M.',
+          },
+        ];
+
+        const conditions = ['Neck Pain', 'Slip Disc', 'Sciatica', 'Frozen Shoulder', 'Knee Pain', 'Migraine'];
+
+        const navItems = ['Home', 'About Me', 'Services', 'Case Studies', 'Testimonials', 'Contact'];
+
+        const whatsappNumber = '918077978440';
+        const whatsappText = encodeURIComponent(
+          'Hi Himanshu, I want to book a neurotherapy appointment.'
+        );
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
+
+        const [userReviews, setUserReviews] = React.useState([]);
+        const [formData, setFormData] = React.useState({
+          name: '',
+          condition: '',
+          text: '',
+        });
+        const [lastReviewTime, setLastReviewTime] = React.useState(null);
+
+        const allReviews = [...reviews, ...userReviews];
+
+        const handleReviewChange = (event) => {
+          const { name, value } = event.target;
+          setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+          }));
+        };
+
+        const handleReviewSubmit = (event) => {
+          event.preventDefault();
+          if (!formData.text.trim()) {
+            return;
+          }
+
+          const newReview = {
+            title: formData.condition || 'Patient Review',
+            text: `“${formData.text.trim()}”`,
+            author: `— ${formData.name.trim() || 'Anonymous'}`,
+          };
+
+          setUserReviews((prev) => [...prev, newReview]);
+          setLastReviewTime(
+            new Date().toLocaleString('en-IN', {
+              dateStyle: 'medium',
+              timeStyle: 'short',
+            })
+          );
+          setFormData({ name: '', condition: '', text: '' });
+        };
+
+        return (
+          <div className="min-h-screen bg-[#f5f8fc] text-slate-800">
+            {/* HEADER */}
+            <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+              <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 lg:px-8">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e6f0fb] text-xl font-bold text-[#1f5c9a] shadow-sm">
+                    🧠
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold tracking-tight text-[#1d5a96]">NeuroTherapy</div>
+                    <div className="-mt-1 text-sm text-slate-500">Home Care</div>
+                  </div>
+                </div>
+
+                <nav className="hidden items-center gap-7 md:flex">
+                  {navItems.map((item, index) => (
+                    <a
+                      key={item}
+                      href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                      className={`text-sm font-medium transition ${
+                        index === 0
+                          ? 'text-[#184f88] underline decoration-2 underline-offset-[12px]'
+                          : 'text-slate-600 hover:text-[#184f88]'
+                      }`}
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </nav>
+
+                <div className="hidden items-center gap-3 sm:flex">
+                  <a
+                    href="tel:+918077978440"
+                    className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-[#163f6e] shadow-sm transition hover:border-[#184f88] hover:text-[#184f88]"
+                  >
+                    Call: +91 8077978440
+                  </a>
+                  <a
+                    href="#appointment"
+                    className="rounded-full bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-5 py-2 text-sm font-bold text-white shadow-md shadow-orange-200 transition hover:-translate-y-0.5"
+                  >
+                    Book Appointment
+                  </a>
+                </div>
+              </div>
+            </header>
+
+            <main>
+              {/* HERO */}
+              <section
+                id="home"
+                className="overflow-hidden bg-[linear-gradient(90deg,#f3f7fc_0%,#eff4fa_35%,#f4f8fd_100%)]"
+              >
+                <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:px-8 lg:py-20">
+                  <div className="max-w-2xl">
+                    <p className="inline-flex items-center rounded-full bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#1b4c84] shadow-sm">
+                      100+ Patients Treated • Home Visit in Delhi
+                    </p>
+                    <h1 className="mt-4 text-4xl font-bold leading-tight text-[#143f6f] sm:text-5xl lg:text-[54px] lg:leading-[1.15]">
+                      Neurotherapy Home Visit for Natural Pain Relief in Delhi
+                    </h1>
+                    <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+                      Get relief from back pain, sciatica, knee pain, slip disc, migraine &amp; more – safely,
+                      naturally and at your home.
+                    </p>
+
+                    <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                      <a
+                        href="#appointment"
+                        className="rounded-lg bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-8 py-4 text-center text-base font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
+                      >
+                        Book Appointment Now
+                      </a>
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-[#37bc56] to-[#249844] px-8 py-4 text-center text-base font-bold text-white shadow-lg shadow-green-200 transition hover:-translate-y-0.5"
+                      >
+                        <span>💬</span> <span>Chat on WhatsApp</span>
+                      </a>
+                    </div>
+
+                    <div className="mt-6 grid gap-4 text-sm text-slate-600 sm:grid-cols-3">
+                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
+                        <div className="text-xl font-bold text-[#173f6c]">100+</div>
+                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
+                          Patients Treated
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
+                        <div className="text-xl font-bold text-[#173f6c]">7+ yrs</div>
+                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
+                          Experience
+                        </div>
+                      </div>
+                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
+                        <div className="text-xl font-bold text-[#173f6c]">Home Visit</div>
+                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
+                          Across Delhi
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="relative flex justify-center lg:justify-end">
+                    <div className="absolute -top-6 -left-6 h-24 w-24 rounded-3xl bg-[#ffedd5] blur-2xl" />
+                    <div className="absolute bottom-0 right-0 h-24 w-24 rounded-3xl bg-[#bfdbfe] blur-2xl" />
+
+                    <div className="relative w-full max-w-[520px] rounded-[32px] bg-white/25 p-4 backdrop-blur-sm">
+                      <div className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white shadow-2xl">
+                        <img
+                          src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=80"
+                          alt="Neurotherapist"
+                          className="h-[580px] w-full object-cover object-top"
+                        />
+                        <div className="absolute bottom-6 right-6 rounded-2xl bg-white/92 px-5 py-4 shadow-xl backdrop-blur">
+                          <div className="text-2xl font-bold text-[#173f6c]">Himanshu Yadav</div>
+                          <div className="text-sm font-medium text-slate-500">Neurotherapist</div>
+                          <div className="mt-2 text-lg font-semibold text-[#173f6c]">
+                            100+ Patients Treated
+                          </div>
+                        </div>
+                        <div className="absolute left-6 top-6 rounded-full bg-green-500/90 px-4 py-1 text-xs font-semibold text-white shadow-md">
+                          ✅ Home Visit Available
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* TESTIMONIALS */}
+              <section id="testimonials" className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
+                <div className="mb-6 flex flex-col items-center justify-center gap-2 text-center">
+                  <div className="flex items-center gap-4">
+                    <div className="h-px w-20 bg-slate-300" />
+                    <h2 className="text-3xl font-bold text-[#173f6c]">Patient Reviews</h2>
+                    <div className="h-px w-20 bg-slate-300" />
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    {lastReviewTime
+                      ? `Last review from this website: ${lastReviewTime}`
+                      : 'Be the first to leave a review on this website.'}
+                  </p>
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-3">
+                  {allReviews.map((review, index) => (
+                    <div
+                      key={`${review.title}-${index}`}
+                      className="rounded-2xl border border-[#dfe8f2] bg-white p-7 shadow-[0_12px_30px_rgba(20,63,111,0.08)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,63,111,0.12)]"
+                    >
+                      <h3 className="text-2xl font-bold text-[#173f6c]">{review.title}</h3>
+                      <p className="mt-5 text-lg leading-8 text-slate-600">{review.text}</p>
+                      <p className="mt-5 text-lg font-semibold text-slate-700">{review.author}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* REVIEW FORM */}
+              <section id="give-review" className="mx-auto max-w-7xl px-4 pb-14 lg:px-8">
+                <div className="grid gap-8 rounded-[30px] bg-white/80 p-8 shadow-[0_18px_40px_rgba(15,23,42,0.08)] md:grid-cols-[1.1fr_1.1fr]">
+                  <div>
+                    <h2 className="text-3xl font-bold text-[#173f6c]">Give Your Review</h2>
+                    <p className="mt-3 text-sm text-slate-600">
+                      Share your experience after treatment. Your feedback helps other patients trust the
+                      service.
+                    </p>
+                    <div className="mt-6 rounded-2xl bg-[#f8fafc] p-4 text-xs text-slate-500">
+                      <p className="font-semibold text-slate-700">How your review is used</p>
+                      <ul className="mt-2 space-y-1 list-disc list-inside">
+                        <li>Shown on this page under Patient Reviews.</li>
+                        <li>No login required, only your first name is shown.</li>
+                        <li>You can mention your pain condition and recovery.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleReviewSubmit} className="space-y-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700">
+                          Your name (optional)
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleReviewChange}
+                          placeholder="Your name"
+                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700">
+                          Condition (e.g. Back Pain)
+                        </label>
+                        <input
+                          type="text"
+                          name="condition"
+                          value={formData.condition}
+                          onChange={handleReviewChange}
+                          placeholder="Back Pain, Knee Pain, Sciatica..."
+                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-slate-700">
+                        Your review
+                        <span className="ml-1 text-red-500">*</span>
+                      </label>
+                      <textarea
+                        name="text"
+                        value={formData.text}
+                        onChange={handleReviewChange}
+                        placeholder="Write how neurotherapy helped you..."
+                        rows="4"
+                        className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
+                        required
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <button
+                        type="submit"
+                        className="rounded-lg bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
+                      >
+                        Submit Review
+                      </button>
+                      <p className="text-xs text-slate-400">
+                        By submitting, you allow us to show your review on this page.
+                      </p>
+                    </div>
+                  </form>
+                </div>
+              </section>
+
+              {/* CONDITIONS */}
+              <section id="services" className="bg-white py-14">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                  <div className="mb-10 flex items-center justify-center gap-4">
+                    <div className="h-px w-20 bg-slate-300" />
+                    <h2 className="text-center text-3xl font-bold text-[#173f6c]">Conditions I Treat</h2>
+                    <div className="h-px w-20 bg-slate-300" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                    {conditions.map((condition, index) => (
+                      <div
+                        key={condition}
+                        className="group rounded-2xl border border-[#e3ebf3] bg-[#f8fbff] p-4 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                      >
+                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-inner">
+                          <img
+                            src={`https://images.unsplash.com/photo-${
+                              [
+                                '1516574187841-cb9cc2ca948b',
+                                '1542291026-7eec264c27ff',
+                                '1517841905240-472988babdf9',
+                                '1576091160550-2173dba999ef',
+                                '1512069772995-ec65ed45afd6',
+                                '1559757175-5700dde675bc',
+                              ][index]
+                            }?auto=format&fit=crop&w=400&q=80`}
+                            alt={condition}
+                            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="text-lg font-bold text-[#173f6c]">{condition}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* ABOUT + CASE STUDY CARD */}
+              <section id="about-me" className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
+                <div className="grid gap-8 lg:grid-cols-[1.7fr_1fr]">
+                  <div className="grid overflow-hidden rounded-[28px] border border-[#dde8f2] bg-white shadow-[0_18px_40px_rgba(20,63,111,0.08)] md:grid-cols-[1.1fr_1fr]">
+                    <img
+                      src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80"
+                      alt="Therapy session"
+                      className="h-full min-h-[320px] w-full object-cover"
+                    />
+                    <div className="flex flex-col justify-center p-8 md:p-10">
+                      <h2 className="text-4xl font-bold text-[#173f6c]">Who We Are</h2>
+                      <p className="mt-5 text-lg leading-8 text-slate-600">
+                        We provide personalized home-visit neurotherapy in Delhi for conditions like back pain,
+                        neck pain, sciatica and joint discomforts. With 2 years of experience, we have helped
+                        many patients avoid surgery and get relief naturally.
+                      </p>
+                      <p className="mt-4 text-lg leading-8 text-slate-600">
+                        Our mission is to provide safe, natural and effective pain relief without medicines.
+                        We focus on understanding the root cause of pain and offering personalised treatment so
+                        that people can recover comfortably at their own homes.
+                      </p>
+                      <p className="mt-4 text-lg leading-8 text-slate-600">
+                        Our vision is to build a healthier community where people can live a pain-free life
+                        without relying only on medicine, and to spread awareness about this ancient natural
+                        pain relief method called neurotherapy.
+                      </p>
+                      <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                        <li>• Home-visit therapy focused on root cause</li>
+                        <li>• Natural, drug-free approach to pain relief</li>
+                        <li>• Helping people avoid unnecessary surgery</li>
+                      </ul>
+                      <div className="mt-8 flex flex-wrap gap-3">
+                        <button className="rounded-lg bg-gradient-to-b from-[#2f6ca9] to-[#1f5387] px-7 py-3 text-base font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5">
+                          Read More
+                        </button>
+                        <a
+                          href={whatsappUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="rounded-lg border border-[#1f5387] px-7 py-3 text-base font-semibold text-[#1f5387] shadow-sm transition hover:bg-[#1f5387] hover:text-white"
+                        >
+                          Ask Your Doubts on WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[28px] border border-[#dde8f2] bg-white p-8 shadow-[0_18px_40px_rgba(20,63,111,0.08)]">
+                    <h3 className="text-2xl font-bold text-[#173f6c]">Case Study:</h3>
+                    <h4 className="mt-4 border-b border-slate-200 pb-4 text-4xl font-bold text-[#173f6c]">
+                      Slip Disc Recovery
+                    </h4>
+                    <div className="mt-6 space-y-5 text-base text-slate-700">
+                      <div className="flex gap-3">
+                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 text-sm">
+                          ❌
+                        </span>
+                        <span>Severe back pain, couldn&apos;t walk properly</span>
+                      </div>
+                      <div className="flex gap-3">
+                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm">
+                          ✅
+                        </span>
+                        <span>After 6 sessions of neurotherapy</span>
+                      </div>
+                      <div className="flex gap-3">
+                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm">
+                          ✅
+                        </span>
+                        <span>Now 80% pain relief and walking comfortably</span>
+                      </div>
+                    </div>
+
+                    <a
+                      href="#appointment"
+                      className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-4 text-center text-base font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
+                    >
+                      Book Similar Treatment
+                    </a>
+                  </div>
+                </div>
+              </section>
+
+              {/* CASE STUDIES SECTION */}
+              <section id="case-studies" className="bg-white py-14">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                  <div className="grid gap-8 rounded-[30px] border border-[#dde8f2] bg-[linear-gradient(120deg,#ffffff_0%,#f5f9fd_58%,#eef4fb_100%)] p-8 shadow-[0_18px_40px_rgba(20,63,111,0.08)] lg:grid-cols-[1.2fr_0.9fr] lg:p-10">
+                    <div>
+                      <h2 className="text-4xl font-bold text-[#173f6c]">
+                        Case Study: Slip Disc Recovery
+                      </h2>
+                      <p className="mt-4 text-base text-slate-600">
+                        Real example of how neurotherapy home visit helped a patient avoid surgery and get
+                        back to normal routine.
+                      </p>
+                      <div className="mt-8 space-y-6 text-lg text-slate-700">
+                        <div className="flex gap-4">
+                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
+                            ✓
+                          </span>
+                          <span>Severe back pain, couldn&apos;t walk properly.</span>
+                        </div>
+                        <div className="flex gap-4">
+                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
+                            ✓
+                          </span>
+                          <span>After 6 sessions of neurotherapy.</span>
+                        </div>
+                        <div className="flex gap-4">
+                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
+                            ✓
+                          </span>
+                          <span>Now 80% pain relief and walking comfortably.</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col justify-center gap-4 lg:pl-10">
+                      <a
+                        href="tel:+918077978440"
+                        className="flex items-center justify-center rounded-xl bg-gradient-to-b from-[#35bd56] to-[#239644] px-6 py-4 text-lg font-bold text-white shadow-lg shadow-green-200 transition hover:-translate-y-0.5"
+                      >
+                        Call to Discuss Your Case
+                      </a>
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-center rounded-xl bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-4 text-lg font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
+                      >
+                        WhatsApp Us
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* APPOINTMENT SECTION */}
+              <section
+                id="appointment"
+                className="bg-[linear-gradient(135deg,#143f6f_0%,#1d64a8_50%,#2563eb_100%)] py-14 text-white"
+              >
+                <div className="mx-auto max-w-5xl px-4 text-center lg:px-8">
+                  <h2 className="text-3xl font-bold lg:text-4xl">Book Your Neurotherapy Appointment</h2>
+                  <p className="mt-4 text-base text-white/80">
+                    Share your pain details on WhatsApp or call directly. I will guide you on the best
+                    treatment plan and schedule a home visit in Delhi.
+                  </p>
+
+                  <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-white px-6 py-4 text-base font-bold text-[#128C7E] shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5"
+                    >
+                      <span>💬</span>
+                      <span>Book on WhatsApp</span>
+                    </a>
+                    <a
+                      href="tel:+918077978440"
+                      className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#22c55e] px-6 py-4 text-base font-bold text-white shadow-lg shadow-emerald-900/30 transition hover:-translate-y-0.5"
+                    >
+                      <span>📞</span>
+                      <span>Call for Appointment</span>
+                    </a>
+                  </div>
+
+                  <p className="mt-4 text-xs text-white/70">
+                    Available for home visit across Delhi • 10 AM to 7 PM
+                  </p>
+                </div>
+              </section>
+            </main>
+
+            {/* FLOATING WHATSAPP BUTTON */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-2xl shadow-xl shadow-green-700/40 transition hover:scale-105"
+              aria-label="Chat on WhatsApp"
+            >
+              💬
+            </a>
+
+            {/* FOOTER */}
+            <footer id="contact" className="mt-10 border-t border-slate-200 bg-[#143f6f] text-white">
+              <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 lg:grid-cols-3 lg:px-8">
+                <div>
+                  <div className="text-3xl font-bold">NeuroTherapy</div>
+                  <div className="mt-2 text-white/75">Home Care in Delhi</div>
+                  <p className="mt-5 max-w-sm text-white/80">
+                    Natural pain relief therapy at your doorstep for back pain, sciatica, slip disc, migraine
+                    and more.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold">Quick Links</h3>
+                  <div className="mt-4 grid gap-3 text-white/80">
+                    {navItems.map((item) => (
+                      <a
+                        key={item}
+                        href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="hover:text-white"
+                      >
+                        {item}
+                      </a>
+                    ))}
+                    <a href="#appointment" className="font-semibold hover:text-white">
+                      Appointment
+                    </a>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold">Contact</h3>
+                  <div className="mt-4 space-y-3 text-white/80">
+                    <p>📞 +91 9876643210</p>
+                    <p>📍 Delhi, India</p>
+                    <p>🕒 Home Visit Available</p>
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-lg bg-[#25D366] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-green-900/40 transition hover:-translate-y-0.5"
+                    >
+                      Chat on WhatsApp
+                    </a>
+                    <a
+                      href="#home"
+                      className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#143f6f] transition hover:-translate-y-0.5"
+                    >
+                      Back to Top
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </footer>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(<NeurotherapyHomeCareWebsite />);
+    </script>
+  </body>
+</html>
+
