@@ -1,885 +1,680 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Neurotherapy Home Care - Delhi</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Painfree.Delhi | Premium Neurotherapy Home Care</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM CDN -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel for JSX support in browser -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- React & Supabase -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body class="bg-[#f5f8fc]">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root { 
+            --bg-primary: #f8fafc; 
+            --text-primary: #0f172a; 
+            --card-bg: #ffffff; 
+            --accent-blue: #1e40af;
+            --accent-orange: #f97316;
+            --accent-emerald: #059669;
+        }
+        .dark { 
+            --bg-primary: #020617; 
+            --text-primary: #f8fafc; 
+            --card-bg: #0f172a; 
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-primary); 
+            color: var(--text-primary); 
+            transition: background-color 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .glass-header { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(241, 245, 249, 0.5);
+        }
+        .dark .glass-header { 
+            background: rgba(2, 6, 23, 0.85); 
+            border-color: rgba(30, 41, 59, 0.5); 
+        }
+        
+        .mesh-gradient {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(210,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(25,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(150,100%,94%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 100%, hsla(200,100%,94%,1) 0, transparent 50%);
+            opacity: 0.9; pointer-events: none;
+        }
+        .dark .mesh-gradient {
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(210,30%,14%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(25,30%,14%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(150,30%,14%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 100%, hsla(200,30%,14%,1) 0, transparent 50%);
+            opacity: 1;
+        }
+        
+        .card-bg { 
+            background-color: var(--card-bg); 
+            border: 1px solid rgba(148, 163, 184, 0.1); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+        }
+        .dark .card-bg { border-color: rgba(51, 65, 85, 0.4); }
+        
+        .card-hover { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-hover:hover { transform: translateY(-10px); box-shadow: 0 30px 45px -12px rgb(0 0 0 / 0.12); }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        .animate-float { animation: float 12s ease-in-out infinite; }
+        
+        .text-gradient { 
+            color: var(--accent-blue);
+            background: linear-gradient(to right, var(--accent-blue), #3b82f6); 
+            -webkit-background-clip: text; 
+            background-clip: text; 
+        }
+        .dark .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #93c5fd); 
+            -webkit-background-clip: text; 
+            background-clip: text;
+        }
+        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+            .text-gradient { -webkit-text-fill-color: transparent; }
+        }
+        
+        .settings-panel { 
+            backdrop-filter: blur(28px); 
+            -webkit-backdrop-filter: blur(28px);
+            background: rgba(255,255,255,0.95); 
+            box-shadow: -10px 0 50px rgba(3, 2, 2, 0.1);
+        }
+        .dark .settings-panel { background: rgba(2, 6, 23, 0.98); }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border: 3px solid var(--bg-primary); border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="antialiased font-medium">
     <div id="root"></div>
 
     <script type="text/babel">
-      function NeurotherapyHomeCareWebsite() {
-        const reviews = [
-          {
-            title: 'Back Pain Relief',
-            text: '“After 4 sessions, my back pain is almost gone. Thank you Himanshu ji!”',
-            author: '— Ramesh K.',
-          },
-          {
-            title: 'Sciatica Pain',
-            text: '“I was suffering from sciatica for months. Himanshu’s therapy really helped me.”',
-            author: '— Anita S.',
-          },
-          {
-            title: 'Knee Pain',
-            text: '“My knee pain reduced a lot after the treatment. Highly recommend!”',
-            author: '— Sunil M.',
-          },
-        ];
+        // --- CONFIG ---
+        const WHATSAPP_NUMBER = "918077978440";
+        const SUPABASE_URL = "https://lzrffwpsezlyxlcrzufz.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_pE0xuK4Q7eGQvPWdgqRqmQ_4vw6o_1S"; 
+        const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-        const conditions = ['Neck Pain', 'Slip Disc', 'Sciatica', 'Frozen Shoulder', 'Knee Pain', 'Migraine'];
+        // --- COMPONENTS ---
 
-        const navItems = [
-          'Home',
-          'About Me',
-          'Services',
-          'Case Studies',
-          'Testimonials',
-          'Appointment',
-          'Feedback',
-          'Contact',
-        ];
-
-        const whatsappNumber = '918077978440';
-        const whatsappText = encodeURIComponent(
-          'Hi Himanshu, I want to book a neurotherapy appointment.'
-        );
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`;
-
-        const todayISO = new Date().toISOString().split('T')[0];
-
-        const [userReviews, setUserReviews] = React.useState([]);
-        const [formData, setFormData] = React.useState({
-          name: '',
-          condition: '',
-          text: '',
-        });
-        const [lastReviewTime, setLastReviewTime] = React.useState(null);
-
-        const [appointmentData, setAppointmentData] = React.useState({
-          name: '',
-          phone: '',
-          service: '',
-          date: '',
-          time: '',
-          note: '',
-        });
-        const [appointmentError, setAppointmentError] = React.useState('');
-        const [appointmentSuccess, setAppointmentSuccess] = React.useState('');
-        const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-        const allReviews = [...reviews, ...userReviews];
-
-        const handleReviewChange = (event) => {
-          const { name, value } = event.target;
-          setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-          }));
-        };
-
-        const handleReviewSubmit = (event) => {
-          event.preventDefault();
-          if (!formData.text.trim()) {
-            return;
-          }
-
-          const newReview = {
-            title: formData.condition || 'Patient Review',
-            text: `“${formData.text.trim()}”`,
-            author: `— ${formData.name.trim() || 'Anonymous'}`,
-          };
-
-          setUserReviews((prev) => [...prev, newReview]);
-          setLastReviewTime(
-            new Date().toLocaleString('en-IN', {
-              dateStyle: 'medium',
-              timeStyle: 'short',
-            })
-          );
-          setFormData({ name: '', condition: '', text: '' });
-        };
-
-        const handleAppointmentChange = (event) => {
-          const { name, value } = event.target;
-          setAppointmentData((prev) => ({
-            ...prev,
-            [name]: value,
-          }));
-          setAppointmentError('');
-          setAppointmentSuccess('');
-        };
-
-        const handleAppointmentSubmit = (event) => {
-          event.preventDefault();
-          const { name, phone, service, date, time, note } = appointmentData;
-
-          if (!name.trim() || !phone.trim() || !service.trim() || !date.trim() || !time.trim()) {
-            setAppointmentError('Please fill all required fields marked with *.');
-            setAppointmentSuccess('');
-            return;
-          }
-
-          if (date < todayISO) {
-            setAppointmentError('You cannot select a past date. Please choose today or a future date.');
-            setAppointmentSuccess('');
-            return;
-          }
-
-          if (!/delhi/i.test(note || '')) {
-            setAppointmentError('We currently serve only Delhi. Please enter a location within Delhi.');
-            setAppointmentSuccess('');
-            return;
-          }
-
-          const message = encodeURIComponent(
-            `New Neurotherapy Appointment Request:\n\nName: ${name}\nPhone: ${phone}\nService: ${service}\nDate: ${date}\nTime: ${time}\nLocation: ${
-              note || 'Not provided'
-            }`
-          );
-
-          const url = `https://wa.me/${whatsappNumber}?text=${message}`;
-          window.open(url, '_blank');
-
-          setAppointmentSuccess(
-            'Your appointment request has been opened in WhatsApp. Please send it there to confirm.'
-          );
-          setAppointmentError('');
-        };
-
-        return (
-          <div className="min-h-screen bg-[#f5f8fc] text-slate-800">
-            {/* HEADER */}
-            <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur shadow-md shadow-slate-200/70">
-              <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 lg:px-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#93c5fd] to-[#1d4ed8] text-xl font-bold text-white shadow-md shadow-blue-300/70">
-                    🧠
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold tracking-tight text-[#1d5a96]">NeuroTherapy</div>
-                    <div className="-mt-1 text-sm text-slate-500">Home Care</div>
-                  </div>
-                </div>
-
-                <nav className="hidden items-center gap-8 md:flex">
-                  {navItems.map((item, index) => (
-                    <a
-                      key={item}
-                      href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                      className={`text-sm font-medium transition ${
-                        index === 0
-                          ? 'text-[#184f88] underline decoration-2 underline-offset-[12px]'
-                          : 'text-slate-600 hover:text-[#184f88]'
-                      }`}
-                    >
-                      {item}
+        const Navbar = ({ navItems, isMenuOpen, setIsMenuOpen }) => (
+            <header className="sticky top-0 z-[100] glass-header shadow-sm transition-all">
+                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+                    <a href="#home" className="flex items-center gap-4 shrink-0 group transition-transform hover:scale-[1.02]">
+                        <div className="h-14 sm:h-16 w-14 sm:w-16 overflow-hidden rounded-2xl bg-[#020617] shadow-xl border border-slate-800 p-0.5">
+                            <img src="logo.painfreenew.jpeg" alt="Painfree Delhi" className="h-full w-full object-contain" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-xl sm:text-2xl font-[900] leading-none tracking-tight">
+                                <span className="text-slate-900 dark:text-blue-400">Painfree</span>
+                                <span className="text-orange-600">.Delhi</span>
+                            </span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500 mt-0.5">Neurotherapy Care</span>
+                        </div>
                     </a>
-                  ))}
-                </nav>
 
-                <div className="hidden items-center gap-3 sm:flex">
-                  <a
-                    href="tel:+918077978440"
-                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-[#eef3ff] px-4 py-1.5 text-xs font-semibold text-[#163f6e] shadow-sm transition hover:border-[#184f88] hover:bg-white hover:text-[#184f88]"
-                  >
-                    <span className="text-base">📞</span>
-                    <span>
-                      <span className="mr-1 text-[10px] uppercase tracking-[0.12em] text-slate-500">Call</span>
-                      <span className="text-[13px] font-semibold">+91 8077978440</span>
-                    </span>
-                  </a>
-                  <a
-                    href="#appointment"
-                    className="rounded-full bg-gradient-to-br from-[#22c55e] to-[#16a34a] px-5 py-2 text-sm font-bold text-white shadow-md shadow-emerald-400/70 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/80"
-                  >
-                    Book Appointment
-                  </a>
+                    <nav className="hidden items-center gap-10 lg:flex">
+                        {navItems.map(item => (
+                            <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} 
+                               className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors relative group">
+                                {item}
+                                <span className="absolute -bottom-1.5 left-0 h-0.5 w-0 bg-slate-900 dark:bg-white transition-all group-hover:w-full rounded-full"></span>
+                            </a>
+                        ))}
+                        <div className="flex items-center gap-4 ml-6">
+                            <a href="tel:+918077978440" className="text-sm font-extrabold text-slate-900 dark:text-white px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">
+                                📞 +91 8077978440
+                            </a>
+                            <a href="#appointment" className="rounded-2xl bg-emerald-600 px-8 py-3 text-sm font-black text-white hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-200 dark:shadow-none">
+                                Book Now
+                            </a>
+                        </div>
+                    </nav>
+
+                    <button className="flex h-11 w-11 items-center justify-center rounded-xl lg:hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm" 
+                            onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
+                        <div className="relative w-5 h-4">
+                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all ${isMenuOpen ? 'top-2 rotate-45' : 'top-0'}`}></span>
+                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full top-2 transition-all ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all ${isMenuOpen ? 'top-2 -rotate-45' : 'top-4'}`}></span>
+                        </div>
+                    </button>
                 </div>
 
-                <button
-                  type="button"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-slate-400 hover:text-slate-900 md:hidden"
-                  aria-label="Toggle navigation"
-                  onClick={() => setIsMenuOpen((prev) => !prev)}
-                >
-                  <span
-                    className={`relative block h-3.5 w-4 transition-all ${
-                      isMenuOpen ? 'rotate-45' : ''
-                    }`}
-                  >
-                    <span
-                      className={`absolute left-0 top-0 h-0.5 w-full rounded-full bg-slate-700 transition-all ${
-                        isMenuOpen ? 'top-1.5 rotate-90' : ''
-                      }`}
-                    />
-                    <span
-                      className={`absolute left-0 top-1.5 h-0.5 w-full rounded-full bg-slate-700 transition-all ${
-                        isMenuOpen ? 'opacity-0' : 'opacity-100'
-                      }`}
-                    />
-                    <span
-                      className={`absolute left-0 top-3 h-0.5 w-full rounded-full bg-slate-700 transition-all ${
-                        isMenuOpen ? 'top-1.5 -rotate-90' : ''
-                      }`}
-                    />
-                  </span>
-                </button>
-              </div>
-
-              {isMenuOpen && (
-                <div className="border-t border-slate-200 bg-white/98 shadow-md shadow-slate-200/80 md:hidden">
-                  <nav className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3 text-sm">
-                    {navItems.map((item) => (
-                      <a
-                        key={item}
-                        href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="rounded-md px-2 py-1.5 text-slate-600 transition hover:bg-slate-100 hover:text-[#184f88]"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item}
-                      </a>
-                    ))}
-                    <div className="mt-2 flex flex-col gap-2">
-                      <a
-                        href="tel:+918077978440"
-                        className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-[#eef3ff] px-4 py-1.5 text-xs font-semibold text-[#163f6e] shadow-sm transition hover:border-[#184f88] hover:bg-white hover:text-[#184f88]"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span className="text-base">📞</span>
-                        <span>
-                          <span className="mr-1 text-[10px] uppercase tracking-[0.12em] text-slate-500">Call</span>
-                          <span className="text-[13px] font-semibold">+91 8077978440</span>
-                        </span>
-                      </a>
-                      <a
-                        href="#appointment"
-                        className="rounded-full bg-gradient-to-br from-[#22c55e] to-[#16a34a] px-5 py-2 text-center text-sm font-bold text-white shadow-md shadow-emerald-400/70 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/80"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Book Appointment
-                      </a>
+                {isMenuOpen && (
+                    <div className="fixed inset-x-0 top-[65px] h-[calc(100vh-65px)] bg-white dark:bg-slate-950 lg:hidden animate-fade-in-down overflow-hidden pt-10 px-6 backdrop-blur-3xl z-[200]">
+                        <nav className="flex flex-col gap-2">
+                            {navItems.map(item => (
+                                <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} 
+                                   className="py-5 px-6 text-lg font-black text-slate-900 dark:text-white active:bg-slate-50 dark:active:bg-slate-900 rounded-3xl transition-all"
+                                   onClick={() => setIsMenuOpen(false)}>
+                                    {item}
+                                </a>
+                            ))}
+                            <div className="mt-10 grid gap-4">
+                                <a href="tel:+918077978440" className="flex items-center justify-center gap-4 py-5 rounded-3xl bg-slate-100 dark:bg-slate-900 font-black text-slate-900 dark:text-white">
+                                    <span className="text-xl">📞</span> +91 8077978440
+                                </a>
+                                <a href="#appointment" className="flex items-center justify-center gap-4 py-6 rounded-3xl bg-emerald-600 font-black text-white active:scale-[0.98] transition-all" onClick={() => setIsMenuOpen(false)}>
+                                    Book Free Consultation
+                                </a>
+                            </div>
+                        </nav>
                     </div>
-                  </nav>
-                </div>
-              )}
+                )}
             </header>
-
-            <main>
-              {/* HERO */}
-              <section
-                id="home"
-                className="overflow-hidden bg-[linear-gradient(90deg,#f3f7fc_0%,#eff4fa_35%,#f4f8fd_100%)]"
-              >
-                <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:px-8 lg:py-20">
-                  <div className="max-w-2xl">
-                    <p className="inline-flex items-center rounded-full bg-white/80 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#1b4c84] shadow-sm">
-                      100+ Patients Treated • Home Visit in Delhi
-                    </p>
-                    <h1 className="mt-4 text-4xl font-bold leading-tight text-[#143f6f] sm:text-5xl lg:text-[54px] lg:leading-[1.15]">
-                      NeuroTherapy Home Care
-                    </h1>
-                    <p className="mt-4 text-2xl font-bold leading-snug text-slate-900 sm:text-[26px]">
-                      Natural Pain Relief at Your Doorstep —{' '}
-                      <span className="bg-gradient-to-r from-[#22c55e] to-[#16a34a] bg-clip-text text-transparent">
-                        Move Better, Live Better.
-                      </span>
-                    </p>
-                    <p className="mt-4 max-w-xl text-lg leading-8 text-slate-600">
-                      Safe, non-surgical neurotherapy sessions at your home for back pain, sciatica, neck and
-                      knee issues. Book in minutes and start moving freely again.
-                    </p>
-
-                    <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                      <a
-                        href="#appointment"
-                        className="rounded-lg bg-gradient-to-b from-[#22c55e] to-[#16a34a] px-8 py-4 text-center text-base font-bold text-white shadow-lg shadow-emerald-300 transition hover:-translate-y-0.5 hover:shadow-emerald-400"
-                      >
-                        Book Appointment Now
-                      </a>
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-[#37bc56] to-[#249844] px-8 py-4 text-center text-base font-bold text-white shadow-lg shadow-green-200 transition hover:-translate-y-0.5"
-                      >
-                        <span>💬</span> <span>Chat on WhatsApp</span>
-                      </a>
-                    </div>
-
-                    <div className="mt-6 grid gap-4 text-sm text-slate-600 sm:grid-cols-3">
-                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
-                        <div className="text-xl font-bold text-[#173f6c]">100+</div>
-                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
-                          Patients Treated
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
-                        <div className="text-xl font-bold text-[#173f6c]">7+ yrs</div>
-                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
-                          Experience
-                        </div>
-                      </div>
-                      <div className="rounded-2xl bg-white/80 p-4 shadow-sm">
-                        <div className="text-xl font-bold text-[#173f6c]">Home Visit</div>
-                        <div className="mt-1 text-xs uppercase tracking-wide text-slate-500">
-                          Across Delhi
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative flex justify-center lg:justify-end">
-                    <div className="absolute -top-6 -left-6 h-24 w-24 rounded-3xl bg-[#ffedd5] blur-2xl" />
-                    <div className="absolute bottom-0 right-0 h-24 w-24 rounded-3xl bg-[#bfdbfe] blur-2xl" />
-
-                    <div className="relative w-full max-w-[520px] rounded-[32px] bg-white/25 p-4 backdrop-blur-sm">
-                      <div className="relative overflow-hidden rounded-[28px] border border-white/70 bg-white shadow-2xl">
-                        <img
-                          src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=80"
-                          alt="Neurotherapist"
-                          className="h-[580px] w-full object-cover object-top"
-                        />
-                        <div className="absolute bottom-6 right-6 rounded-2xl bg-white/92 px-5 py-4 shadow-xl backdrop-blur">
-                          <div className="text-2xl font-bold text-[#173f6c]">Himanshu Yadav</div>
-                          <div className="text-sm font-medium text-slate-500">Neurotherapist</div>
-                          <div className="mt-2 text-lg font-semibold text-[#173f6c]">
-                            100+ Patients Treated
-                          </div>
-                        </div>
-                        <div className="absolute left-6 top-6 rounded-full bg-green-500/90 px-4 py-1 text-xs font-semibold text-white shadow-md">
-                          ✅ Home Visit Available
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* TESTIMONIALS */}
-              <section id="testimonials" className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-                <div className="mb-6 flex flex-col items-center justify-center gap-2 text-center">
-                  <div className="flex items-center gap-4">
-                    <div className="h-px w-20 bg-slate-300" />
-                    <h2 className="text-3xl font-bold text-[#173f6c]">Patient Reviews</h2>
-                    <div className="h-px w-20 bg-slate-300" />
-                  </div>
-                  <p className="text-xs text-slate-500">
-                    {lastReviewTime
-                      ? `Last review from this website: ${lastReviewTime}`
-                      : 'Be the first to leave a review on this website.'}
-                  </p>
-                </div>
-
-                <div className="grid gap-6 md:grid-cols-3">
-                  {allReviews.map((review, index) => (
-                    <div
-                      key={`${review.title}-${index}`}
-                      className="rounded-2xl border border-[#dfe8f2] bg-white p-7 shadow-[0_12px_30px_rgba(20,63,111,0.08)] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(20,63,111,0.12)]"
-                    >
-                      <h3 className="text-2xl font-bold text-[#173f6c]">{review.title}</h3>
-                      <p className="mt-5 text-lg leading-8 text-slate-600">{review.text}</p>
-                      <p className="mt-5 text-lg font-semibold text-slate-700">{review.author}</p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              {/* FEEDBACK / REVIEW PAGE */}
-              <section id="feedback" className="mx-auto max-w-7xl px-4 pb-14 lg:px-8">
-                <div className="grid gap-8 rounded-[30px] bg-white/80 p-8 shadow-[0_18px_40px_rgba(15,23,42,0.08)] md:grid-cols-[1.1fr_1.1fr]">
-                  <div>
-                    <h2 className="text-3xl font-bold text-[#173f6c]">Feedback &amp; Review</h2>
-                    <p className="mt-3 text-sm text-slate-600">
-                      Share your experience after treatment. Your honest feedback helps other patients trust
-                      the service and improves the overall care.
-                    </p>
-                    <div className="mt-6 rounded-2xl bg-[#f8fafc] p-4 text-xs text-slate-500">
-                      <p className="font-semibold text-slate-700">How your feedback is used</p>
-                      <ul className="mt-2 space-y-1 list-disc list-inside">
-                        <li>Shown publicly on this page under Patient Reviews.</li>
-                        <li>No login required; only your first name is shown.</li>
-                        <li>You can mention your pain condition, recovery and experience.</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <form onSubmit={handleReviewSubmit} className="space-y-4">
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Your name (optional)
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleReviewChange}
-                          placeholder="Your name"
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Condition (e.g. Back Pain)
-                        </label>
-                        <input
-                          type="text"
-                          name="condition"
-                          value={formData.condition}
-                          onChange={handleReviewChange}
-                          placeholder="Back Pain, Knee Pain, Sciatica..."
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-slate-700">
-                        Your review
-                        <span className="ml-1 text-red-500">*</span>
-                      </label>
-                      <textarea
-                        name="text"
-                        value={formData.text}
-                        onChange={handleReviewChange}
-                        placeholder="Write how neurotherapy helped you..."
-                        rows="4"
-                        className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        required
-                      />
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <button
-                        type="submit"
-                        className="rounded-lg bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
-                      >
-                        Submit Review
-                      </button>
-                      <p className="text-xs text-slate-400">
-                        By submitting, you allow us to show your review on this page.
-                      </p>
-                    </div>
-                  </form>
-                </div>
-              </section>
-
-              {/* CONDITIONS */}
-              <section id="services" className="bg-white py-14">
-                <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                  <div className="mb-10 flex items-center justify-center gap-4">
-                    <div className="h-px w-20 bg-slate-300" />
-                    <h2 className="text-center text-3xl font-bold text-[#173f6c]">Conditions I Treat</h2>
-                    <div className="h-px w-20 bg-slate-300" />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-                    {conditions.map((condition, index) => (
-                      <div
-                        key={condition}
-                        className="group rounded-2xl border border-[#e3ebf3] bg-[#f8fbff] p-4 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                      >
-                        <div className="mb-4 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-white shadow-inner">
-                          <img
-                            src={`https://images.unsplash.com/photo-${
-                              [
-                                '1516574187841-cb9cc2ca948b',
-                                '1542291026-7eec264c27ff',
-                                '1517841905240-472988babdf9',
-                                '1576091160550-2173dba999ef',
-                                '1512069772995-ec65ed45afd6',
-                                '1559757175-5700dde675bc',
-                              ][index]
-                            }?auto=format&fit=crop&w=400&q=80`}
-                            alt={condition}
-                            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                          />
-                        </div>
-                        <div className="text-lg font-bold text-[#173f6c]">{condition}</div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* ABOUT + CASE STUDY CARD */}
-              <section id="about-me" className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-                <div className="grid gap-8 lg:grid-cols-[1.7fr_1fr]">
-                  <div className="grid overflow-hidden rounded-[28px] border border-[#dde8f2] bg-white shadow-[0_18px_40px_rgba(20,63,111,0.08)] md:grid-cols-[1.1fr_1fr]">
-                    <img
-                      src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80"
-                      alt="Therapy session"
-                      className="h-full min-h-[320px] w-full object-cover"
-                    />
-                    <div className="flex flex-col justify-center p-8 md:p-10">
-                      <h2 className="text-4xl font-bold text-[#173f6c]">Who We Are</h2>
-                      <p className="mt-5 text-lg leading-8 text-slate-600">
-                        We provide personalized home-visit neurotherapy in Delhi for conditions like back pain,
-                        neck pain, sciatica and joint discomforts. With 2 years of experience, we have helped
-                        many patients avoid surgery and get relief naturally.
-                      </p>
-                      <p className="mt-4 text-lg leading-8 text-slate-600">
-                        Our mission is to provide safe, natural and effective pain relief without medicines.
-                        We focus on understanding the root cause of pain and offering personalised treatment so
-                        that people can recover comfortably at their own homes.
-                      </p>
-                      <p className="mt-4 text-lg leading-8 text-slate-600">
-                        Our vision is to build a healthier community where people can live a pain-free life
-                        without relying only on medicine, and to spread awareness about this ancient natural
-                        pain relief method called neurotherapy.
-                      </p>
-                      <ul className="mt-4 space-y-2 text-sm text-slate-600">
-                        <li>• Home-visit therapy focused on root cause</li>
-                        <li>• Natural, drug-free approach to pain relief</li>
-                        <li>• Helping people avoid unnecessary surgery</li>
-                      </ul>
-                      <div className="mt-8 flex flex-wrap gap-3">
-                        <button className="rounded-lg bg-gradient-to-b from-[#2f6ca9] to-[#1f5387] px-7 py-3 text-base font-bold text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5">
-                          Read More
-                        </button>
-                        <a
-                          href={whatsappUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="rounded-lg border border-[#1f5387] px-7 py-3 text-base font-semibold text-[#1f5387] shadow-sm transition hover:bg-[#1f5387] hover:text-white"
-                        >
-                          Ask Your Doubts on WhatsApp
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-[28px] border border-[#dde8f2] bg-white p-8 shadow-[0_18px_40px_rgba(20,63,111,0.08)]">
-                    <h3 className="text-2xl font-bold text-[#173f6c]">Case Study:</h3>
-                    <h4 className="mt-4 border-b border-slate-200 pb-4 text-4xl font-bold text-[#173f6c]">
-                      Slip Disc Recovery
-                    </h4>
-                    <div className="mt-6 space-y-5 text-base text-slate-700">
-                      <div className="flex gap-3">
-                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 text-sm">
-                          ❌
-                        </span>
-                        <span>Severe back pain, couldn&apos;t walk properly</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm">
-                          ✅
-                        </span>
-                        <span>After 6 sessions of neurotherapy</span>
-                      </div>
-                      <div className="flex gap-3">
-                        <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm">
-                          ✅
-                        </span>
-                        <span>Now 80% pain relief and walking comfortably</span>
-                      </div>
-                    </div>
-
-                    <a
-                      href="#appointment"
-                      className="mt-8 inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-4 text-center text-base font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
-                    >
-                      Book Similar Treatment
-                    </a>
-                  </div>
-                </div>
-              </section>
-
-              {/* CASE STUDIES SECTION */}
-              <section id="case-studies" className="bg-white py-14">
-                <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                  <div className="grid gap-8 rounded-[30px] border border-[#dde8f2] bg-[linear-gradient(120deg,#ffffff_0%,#f5f9fd_58%,#eef4fb_100%)] p-8 shadow-[0_18px_40px_rgba(20,63,111,0.08)] lg:grid-cols-[1.2fr_0.9fr] lg:p-10">
-                    <div>
-                      <h2 className="text-4xl font-bold text-[#173f6c]">
-                        Case Study: Slip Disc Recovery
-                      </h2>
-                      <p className="mt-4 text-base text-slate-600">
-                        Real example of how neurotherapy home visit helped a patient avoid surgery and get
-                        back to normal routine.
-                      </p>
-                      <div className="mt-8 space-y-6 text-lg text-slate-700">
-                        <div className="flex gap-4">
-                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
-                            ✓
-                          </span>
-                          <span>Severe back pain, couldn&apos;t walk properly.</span>
-                        </div>
-                        <div className="flex gap-4">
-                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
-                            ✓
-                          </span>
-                          <span>After 6 sessions of neurotherapy.</span>
-                        </div>
-                        <div className="flex gap-4">
-                          <span className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#234f85] text-sm text-white">
-                            ✓
-                          </span>
-                          <span>Now 80% pain relief and walking comfortably.</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col justify-center gap-4 lg:pl-10">
-                      <a
-                        href="tel:+918077978440"
-                        className="flex items-center justify-center rounded-xl bg-gradient-to-b from-[#35bd56] to-[#239644] px-6 py-4 text-lg font-bold text-white shadow-lg shadow-green-200 transition hover:-translate-y-0.5"
-                      >
-                        Call to Discuss Your Case
-                      </a>
-                      <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center justify-center rounded-xl bg-gradient-to-b from-[#ff8a2a] to-[#f1651f] px-6 py-4 text-lg font-bold text-white shadow-lg shadow-orange-200 transition hover:-translate-y-0.5"
-                      >
-                        WhatsApp Us
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              {/* APPOINTMENT SECTION */}
-              <section
-                id="appointment"
-                className="bg-[linear-gradient(135deg,#143f6f_0%,#1d64a8_50%,#2563eb_100%)] py-16 text-white"
-              >
-                <div className="mx-auto max-w-5xl px-4 lg:px-8">
-                  <div className="mb-8 text-center">
-                    <h2 className="text-3xl font-bold lg:text-4xl">
-                      Take the next step and schedule an appointment
-                    </h2>
-                    <p className="mt-3 text-sm text-white/80">
-                      Fill in your details below. Your request will open directly in WhatsApp so you can
-                      confirm the booking with us.
-                    </p>
-                  </div>
-
-                  <form
-                    onSubmit={handleAppointmentSubmit}
-                    className="rounded-3xl bg-white/95 p-6 text-left text-slate-800 shadow-[0_18px_40px_rgba(15,23,42,0.35)] sm:p-8"
-                  >
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Your Name<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={appointmentData.name}
-                          onChange={handleAppointmentChange}
-                          placeholder="Your full name"
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Your Phone<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <div className="mt-1 flex items-center gap-2 rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm">
-                          <span className="whitespace-nowrap text-slate-500">🇮🇳 +91</span>
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={appointmentData.phone}
-                            onChange={handleAppointmentChange}
-                            placeholder="Phone number"
-                            className="w-full bg-transparent outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 grid gap-5 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Service<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <select
-                          name="service"
-                          value={appointmentData.service}
-                          onChange={handleAppointmentChange}
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        >
-                          <option value="">Select Service</option>
-                          <option value="Back Pain / Slip Disc">Back Pain / Slip Disc</option>
-                          <option value="Sciatica Pain">Sciatica Pain</option>
-                          <option value="Knee / Joint Pain">Knee / Joint Pain</option>
-                          <option value="Migraine / Headache">Migraine / Headache</option>
-                          <option value="Other Neurotherapy">Other Neurotherapy</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Date<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <input
-                          type="date"
-                          name="date"
-                          value={appointmentData.date}
-                          min={todayISO}
-                          onChange={handleAppointmentChange}
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="mt-5 grid gap-5 sm:grid-cols-2">
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Time<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <input
-                          type="time"
-                          name="time"
-                          value={appointmentData.time}
-                          onChange={handleAppointmentChange}
-                          className="mt-1 w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700">
-                          Location in Delhi<span className="ml-1 text-red-500">*</span>
-                        </label>
-                        <div className="mt-1 flex gap-2">
-                          <input
-                            type="text"
-                            name="note"
-                            value={appointmentData.note}
-                            onChange={handleAppointmentChange}
-                            placeholder="e.g. Laxmi Nagar, Delhi"
-                            className="w-full rounded-xl border border-slate-200 bg-[#f9fafb] px-3 py-2 text-sm outline-none ring-[#2563eb]/20 focus:border-[#2563eb] focus:ring"
-                          />
-                          <button
-                            type="button"
-                            className="hidden rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-[#2563eb] hover:text-[#2563eb] sm:inline-flex"
-                            onClick={() =>
-                              setAppointmentData((prev) => ({
-                                ...prev,
-                                note: prev.note || 'Live location in Delhi',
-                              }))
-                            }
-                          >
-                            Live<br />Location
-                          </button>
-                        </div>
-                        <p className="mt-1 text-xs text-slate-500">
-                          Currently available only in Delhi. Please enter a location that includes “Delhi”.
-                        </p>
-                      </div>
-                    </div>
-
-                    {appointmentError && (
-                      <p className="mt-4 text-sm font-medium text-red-500">{appointmentError}</p>
-                    )}
-                    {appointmentSuccess && (
-                      <p className="mt-4 text-sm font-medium text-emerald-500">{appointmentSuccess}</p>
-                    )}
-
-                    <div className="mt-6 flex flex-col items-center justify-between gap-3 sm:flex-row">
-                      <button
-                        type="submit"
-                        className="w-full rounded-full bg-gradient-to-b from-[#4f46e5] to-[#7c3aed] px-8 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-900/40 transition hover:-translate-y-0.5 sm:w-auto"
-                      >
-                        Book an Appointment
-                      </button>
-                      <p className="text-xs text-slate-500">
-                        We will confirm the exact time with you on WhatsApp.
-                      </p>
-                    </div>
-                  </form>
-
-                  <p className="mt-4 text-center text-xs text-white/70">
-                    Available for home visit across Delhi • 10 AM to 7 PM
-                  </p>
-                </div>
-              </section>
-            </main>
-
-            {/* FLOATING WHATSAPP BUTTON */}
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-2xl shadow-xl shadow-green-700/40 transition hover:scale-105"
-              aria-label="Chat on WhatsApp"
-            >
-              💬
-            </a>
-
-            {/* FOOTER */}
-            <footer id="contact" className="mt-10 border-t border-slate-200 bg-[#143f6f] text-white">
-              <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 lg:grid-cols-3 lg:px-8">
-                <div>
-                  <div className="text-3xl font-bold">NeuroTherapy</div>
-                  <div className="mt-2 text-white/75">Home Care in Delhi</div>
-                  <p className="mt-5 max-w-sm text-white/80">
-                    Natural pain relief therapy at your doorstep for back pain, sciatica, slip disc, migraine
-                    and more.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold">Quick Links</h3>
-                  <div className="mt-4 grid gap-3 text-white/80">
-                    {navItems.map((item) => (
-                      <a
-                        key={item}
-                        href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="hover:text-white"
-                      >
-                        {item}
-                      </a>
-                    ))}
-                    <a href="#appointment" className="font-semibold hover:text-white">
-                      Appointment
-                    </a>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-bold">Contact</h3>
-                  <div className="mt-4 space-y-3 text-white/80">
-                    <p>📞 +91 9876643210</p>
-                    <p>📍 Delhi, India</p>
-                    <p>🕒 Home Visit Available</p>
-                  </div>
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-lg bg-[#25D366] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-green-900/40 transition hover:-translate-y-0.5"
-                    >
-                      Chat on WhatsApp
-                    </a>
-                    <a
-                      href="#home"
-                      className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#143f6f] transition hover:-translate-y-0.5"
-                    >
-                      Back to Top
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </footer>
-          </div>
         );
-      }
 
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<NeurotherapyHomeCareWebsite />);
+        const Hero = () => (
+            <section id="home" className="relative overflow-hidden py-16 lg:py-32">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="grid gap-20 lg:grid-cols-2 lg:items-center">
+                        <div className="text-center lg:text-left">
+                            <div className="inline-flex items-center gap-2.5 rounded-full bg-blue-50/80 dark:bg-blue-900/20 px-5 py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-[#1e40af] dark:text-blue-400 border border-blue-100 dark:border-blue-800 shadow-sm mb-10">
+                                Premium Home-Visit Neurotherapy in Delhi
+                            </div>
+                            <h1 className="text-4xl sm:text-6xl xl:text-[68px] font-[900] leading-[1.1] text-slate-900 dark:text-white tracking-tight">
+                                Natural Pain Relief at Your Doorstep — <br className="hidden md:block" />
+                                <span className="text-emerald-600 dark:text-emerald-400">Move Better, Live Better.</span>
+                            </h1>
+                            <p className="mt-8 text-lg sm:text-xl font-bold leading-relaxed text-slate-700 dark:text-slate-300 lg:pr-24 max-w-2xl mx-auto lg:mx-0">
+                                Skip the medicines and clinic queues. Experience certified neurotherapy that activates your body's natural healing in the comfort of your home.
+                            </p>
+                            <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+                                <a href="#appointment" className="rounded-[1.75rem] bg-[#1e40af] px-12 py-5 text-center text-base font-black text-white shadow-2xl shadow-blue-200 dark:shadow-none transition-all hover:bg-blue-800 hover:-translate-y-1 active:scale-95 uppercase tracking-widest">
+                                    Book Visit
+                                </a>
+                                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="flex items-center justify-center gap-3 rounded-[1.75rem] bg-emerald-500 px-12 py-5 text-center text-base font-black text-white shadow-xl shadow-emerald-100 dark:shadow-none transition-all hover:bg-emerald-600 hover:-translate-y-1 active:scale-95 uppercase tracking-widest">
+                                    <span>💬</span> Chat Now
+                                </a>
+                            </div>
+                            
+                            <div className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 border-t border-slate-200/60 dark:border-slate-800 pt-12 max-w-lg mx-auto lg:mx-0">
+                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">100+</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Recovered</div></div>
+                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">7+</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Experience</div></div>
+                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">5/5</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Rating</div></div>
+                            </div>
+                        </div>
+                        <div className="relative group perspective-1000">
+                            <div className="relative overflow-hidden rounded-[4rem] card-bg p-4 shadow-3xl transition-all duration-700 hover:rotate-2">
+                                <img src="nuero.himanshu.jpeg" alt="Therapist Himanshu" className="aspect-[4/5] lg:aspect-square h-[450px] sm:h-[550px] lg:h-[700px] w-full rounded-[3.5rem] object-cover object-[center_15%]" />
+                                <div className="absolute bottom-10 left-10 right-10 rounded-[2.5rem] bg-white/95 dark:bg-slate-900/95 p-8 shadow-2xl backdrop-blur-xl border border-white/50 dark:border-white/10">
+                                    <div className="flex items-center gap-5">
+                                        <div className="h-14 w-14 rounded-full overflow-hidden border-2 border-slate-100 dark:border-slate-800 bg-white shrink-0">
+                                            <img src="nuero.himanshu.jpeg" alt="Avatar" className="h-full w-full object-cover object-top" />
+                                        </div>
+                                        <div>
+                                            <div className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Himanshu Yadav</div>
+                                            <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Certified Neurotherapist</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const About = () => (
+            <section id="about" className="py-24 lg:py-40 relative">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="text-center mb-20 max-w-3xl mx-auto">
+                        <span className="font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] text-[11px]">Clinical Standards</span>
+                        <h2 className="mt-6 text-4xl lg:text-6xl font-[900] text-slate-900 dark:text-slate-100 leading-tight tracking-tight">
+                            Natural Healing, <br/><span className="text-slate-400 italic font-medium">Delivered to Your Door.</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid gap-10 lg:grid-cols-2 lg:items-stretch">
+                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
+                            <div className="h-16 w-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🏠</div>
+                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Who We Are</h3>
+                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+                                We are dedicated neurotherapy specialists providing personalized, <span className="text-blue-600 dark:text-blue-400">home-visit</span> care for chronic ailments. With <span className="text-slate-900 dark:text-white">2+ years</span> of clinical excellence, we have empowered countless patients in Delhi to recover and <span className="text-orange-600">avoid surgeries</span> through precision-led natural healing.
+                            </p>
+                        </div>
+
+                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
+                            <div className="h-16 w-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🌱</div>
+                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Our Mission</h3>
+                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+                                To deliver safe, effective, and <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">natural pain relief </span> without reliance on medicine. We dive deep into the root cause of imbalance, ensuring our patients achieve a <span className="text-slate-900 dark:text-white">pain-free life</span> within the comfort and privacy of their own homes.
+                            </p>
+                        </div>
+
+                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
+                            <div className="h-16 w-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🎯</div>
+                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Our Vision</h3>
+                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+                                To cultivate a healthier community where people can live <span className="text-orange-600 font-extrabold">without depending on medicines</span>. We strive to make professional neurotherapy accessible and raise awareness for sustainable, medicine-free living across all ages.
+                            </p>
+                        </div>
+
+                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
+                            <div className="h-16 w-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🤝</div>
+                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">What We Do</h3>
+                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
+                                We focus on identifying the root cause of your health concerns—understanding where the imbalance actually begins rather than just treating symptoms. Through targeted therapy points, we gently stimulate the body’s natural healing mechanisms, helping organs restore their balance without any pain. Our approach is holistic, precise, and designed to bring long-term wellness by correcting the source of the problem.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Reviews = ({ reviews, loading, onSubmitReview, formData, setFormData, lastReviewDate }) => (
+            <section id="reviews" className="py-24 lg:py-40 relative">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="text-center mb-20">
+                        <span className="font-black text-orange-500 uppercase tracking-[0.3em] text-[11px]">Patient Stories</span>
+                        <h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Verified Recovery Reports</h2>
+                        {lastReviewDate && <div className="mt-10 inline-block px-8 py-3 rounded-full bg-blue-50/80 dark:bg-blue-900/20 shadow-sm text-[11px] font-black text-blue-700 dark:text-blue-400 uppercase tracking-widest border border-blue-100/50 dark:border-blue-900/30">Last Updated: {lastReviewDate}</div>}
+                    </div>
+                    <div className="grid gap-8 sm:gap-12 md:grid-cols-2 lg:grid-cols-3">
+                        {reviews.length > 0 ? reviews.map((r, i) => (
+                            <div key={i} className="rounded-[3.5rem] card-bg p-12 shadow-xl card-hover flex flex-col justify-between">
+                                <div>
+                                    <div className="flex gap-1.5 mb-10 text-orange-400/60">{"★".repeat(5)}</div>
+                                    <p className="text-lg font-bold leading-[1.7] text-slate-700 dark:text-slate-300 italic">"{r.review_text}"</p>
+                                </div>
+                                <div className="mt-12 flex items-center gap-5">
+                                    <div className="h-14 w-14 rounded-[1.25rem] bg-slate-50 dark:bg-slate-800 flex items-center justify-center font-black text-slate-900 dark:text-blue-400 text-xl">{r.name ? r.name[0].toUpperCase() : "P"}</div>
+                                    <div>
+                                        <div className="font-[900] text-slate-900 dark:text-white text-base">{r.name || "Patient"}</div>
+                                        <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-1">{r.condition || "Recovered"}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )) : <div className="col-span-full py-24 text-center text-slate-500 text-xl font-black italic">No feedback stories shared yet...</div>}
+                    </div>
+                    <div className="mt-28 rounded-[4rem] card-bg shadow-2xl lg:flex items-stretch overflow-hidden border border-slate-100 dark:border-slate-800">
+                        <div className="bg-[#1e40af] p-16 lg:w-2/5 flex flex-col justify-center text-white relative lg:rounded-r-[5rem]">
+                            <h3 className="text-4xl font-[900] mb-8 leading-tight">Help Others Find <br />Natural Relief</h3>
+                            <p className="text-blue-100/80 font-bold uppercase tracking-widest text-[11px]">Your honest feedback helps the people of Delhi choose better healing paths.</p>
+                        </div>
+                        <div className="p-10 lg:p-20 lg:w-3/5">
+                            <form onSubmit={(e) => { e.preventDefault(); onSubmitReview(); }} className="space-y-8">
+                                <div className="grid gap-8 sm:grid-cols-2">
+                                    <div className="space-y-3">
+                                        <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label>
+                                        <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" placeholder="John Doe" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Condition Treated</label>
+                                        <input value={formData.condition} onChange={e => setFormData({...formData, condition: e.target.value})} type="text" placeholder="e.g. Back Pain" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" />
+                                    </div>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Your Story</label>
+                                    <textarea value={formData.review_text} onChange={e => setFormData({...formData, review_text: e.target.value})} placeholder="Describe your recovery..." rows="4" className="w-full rounded-[1.5rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-6 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required></textarea>
+                                </div>
+                                <button type="submit" disabled={loading} className="w-full lg:w-max rounded-[1.5rem] bg-orange-500 px-14 py-5 font-black text-white hover:bg-orange-600 transition-all uppercase tracking-[0.2em]">{loading ? "Publishing..." : "Post Review"}</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Appointment = () => {
+            const [localLoading, setLocalLoading] = React.useState(false);
+            const [status, setStatus] = React.useState("");
+            const [locationSuccess, setLocationSuccess] = React.useState(false);
+            const [aptData, setAptData] = React.useState({
+                name: '', phone: '', service: '', date: '', time: '', location: ''
+            });
+
+            const getLiveLocation = () => {
+                if (!navigator.geolocation) {
+                    setStatus("Location access not supported by your browser.");
+                    return;
+                }
+                
+                setLocalLoading(true);
+                setLocationSuccess(false);
+                setStatus("Fetching your location...");
+                
+                navigator.geolocation.getCurrentPosition(
+                    async (pos) => {
+                        const { latitude, longitude } = pos.coords;
+                        try {
+                            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`, {
+                                headers: { 'Accept-Language': 'en' }
+                            });
+                            
+                            if (!res.ok) throw new Error("Reverse geocoding failed");
+                            
+                            const data = await res.json();
+                            const readableAddress = data.display_name || `${data.address?.suburb || ''}, ${data.address?.city || ''}, ${data.address?.postcode || ''}`;
+                            
+                            setAptData(p => ({ ...p, location: readableAddress || `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}` }));
+                            setStatus("Location captured successfully!");
+                            setLocationSuccess(true);
+                        } catch (err) {
+                            setAptData(p => ({ ...p, location: `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}` }));
+                            setStatus("Captured raw coordinates.");
+                            setLocationSuccess(true);
+                        } finally {
+                            setLocalLoading(false);
+                        }
+                    },
+                    (err) => {
+                        let errorMsg = "Unable to fetch location.";
+                        if (err.code === 1) errorMsg = "Permission denied. Please enable GPS.";
+                        else if (err.code === 3) errorMsg = "Request timed out. Please try again.";
+                        
+                        setStatus(errorMsg);
+                        setLocalLoading(false);
+                        setLocationSuccess(false);
+                    },
+                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+                );
+            };
+
+            const submitAppointment = (e) => {
+                e.preventDefault();
+                const { name, phone, service, date, time, location } = aptData;
+                if (!/^\d{10}$/.test(phone)) { alert("Need 10-digit phone number."); return; }
+                const msg = `Appointment Request:\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n🩹 Service: ${service}\n📅 Date: ${date} at ${time}\n📍 Location: ${location}`;
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
+            return (
+                <section id="appointment" className="py-24 lg:py-40 relative">
+                    <div className="mx-auto max-w-5xl px-4 lg:px-8">
+                        <div className="text-center mb-16 px-4">
+                            <span className="font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.3em] text-[11px]">Instant Booking</span>
+                            <h2 className="mt-8 text-4xl lg:text-6xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Schedule Your Visit</h2>
+                            <p className="mt-8 text-lg font-bold text-slate-600 dark:text-slate-400">Professional therapy at your doorstep in Delhi.</p>
+                        </div>
+                        <form onSubmit={submitAppointment} className="rounded-[4rem] card-bg p-8 sm:p-20 shadow-3xl space-y-12 border border-slate-100 dark:border-slate-800 relative overflow-hidden">
+                            <div className="grid gap-10 sm:grid-cols-2">
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label>
+                                    <input value={aptData.name} onChange={e => setAptData({...aptData, name: e.target.value})} type="text" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp Phone</label>
+                                    <input value={aptData.phone} onChange={e => setAptData({...aptData, phone: e.target.value})} type="tel" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Service Required</label>
+                                    <select value={aptData.service} onChange={e => setAptData({...aptData, service: e.target.value})} className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400">
+                                        <option value="">Select Option</option>
+                                        <option>Back Pain</option>
+                                        <option>Sciatica</option>
+                                        <option>Cervical Pain</option>
+                                        <option>Knee Pain</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Date</label>
+                                    <input value={aptData.date} onChange={e => setAptData({...aptData, date: e.target.value})} type="date" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
+                                </div>
+                            </div>
+                            <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest text-center block">Detailed Delhi Address</label>
+                                <div className="relative group">
+                                    <input value={aptData.location} onChange={e => setAptData({...aptData, location: e.target.value})} type="text" placeholder="House No, Landmark, Sector..." className="w-full rounded-[2.5rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-10 py-7 pr-40 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400 shadow-inner" required/>
+                                    <button onClick={getLiveLocation} disabled={localLoading} type="button" className={`absolute right-4 top-1/2 -translate-y-1/2 rounded-[1.5rem] px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 ${localLoading ? 'bg-slate-200 text-slate-400' : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950'}`}>
+                                        {localLoading ? "Fetching..." : "📍 Get Live"}
+                                    </button>
+                                </div>
+                                {status && <p className={`text-center font-black uppercase tracking-widest text-[11px] py-4 transition-all ${locationSuccess ? 'text-emerald-600' : 'text-slate-700 dark:text-slate-400'}`}>{status}</p>}
+                                <p className="text-[10px] text-center text-slate-400 italic">Note: Live location requires HTTPS or Localhost to work securely on browsers.</p>
+                            </div>
+                            <button type="submit" className="w-full rounded-[2.5rem] bg-emerald-600 py-7 text-base font-[900] text-white shadow-2xl hover:bg-emerald-700 transition-all uppercase tracking-[0.25em]">Send Booking Request</button>
+                        </form>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer id="contact" className="bg-[#020617] pt-28 pb-12 text-slate-400">
+                <div className="mx-auto max-w-7xl px-4 lg:px-8">
+                    <div className="grid gap-20 lg:grid-cols-4">
+                        <div className="lg:col-span-2">
+                            <div className="flex items-center gap-5">
+                                <div className="h-20 sm:h-24 w-20 sm:w-24 overflow-hidden rounded-2xl bg-[#020617] p-1 border border-slate-800"><img src="logo.painfreenew.jpeg" className="h-full w-full object-contain" alt="Logo" /></div>
+                                <span className="text-4xl font-[900] text-white tracking-tight">Painfree<span className="text-orange-500">.Delhi</span></span>
+                            </div>
+                            <p className="mt-10 text-lg font-bold leading-[1.8] max-w-md text-slate-400">Certified home-visit neurotherapy in Delhi. Activating natural healing for structural recovery without medicines.</p>
+                            
+                            <a href="https://wa.me/918077978440" target="_blank" className="inline-flex items-center gap-3 mt-10 px-8 py-5 rounded-[2rem] bg-emerald-600/10 border border-emerald-600/20 hover:bg-emerald-600/20 active:scale-95 transition-all group">
+                                <svg className="w-6 h-6 fill-emerald-500" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.049-.537c1.026.541 1.956.816 3.241.817 3.189 0 5.766-2.58 5.767-5.768.001-3.188-2.571-5.781-5.769-5.781zm3.434 8.169c-.145.408-.847.839-1.189.879-.341.04-.67.149-1.391-.073-.721-.223-1.637-.624-2.527-1.428-.89-.803-1.492-1.666-1.716-2.146-.223-.48-.023-.741.217-.981.24-.241.48-.56.721-.84.24-.28.32-.48.48-.8.16-.32.08-.6-.04-.84-.12-.24-1.08-2.6-1.481-3.56-.395-.94-.799-.813-1.081-.827h-.921c-.321 0-.841.12-1.282.6-.441.48-1.681 1.641-1.681 4s1.722 4.643 1.962 4.964c.24.321 3.388 5.174 8.205 7.251 1.147.494 2.043.79 2.742.911 1.152.183 2.199.157 3.029.033.911-.137 2.803-1.146 3.193-2.253.391-1.107.391-2.053.273-2.253-.118-.2-.439-.321-.92-.562z"/></svg>
+                                <span className="text-sm font-black text-emerald-500 uppercase tracking-[0.2em]">Chat on WhatsApp</span>
+                            </a>
+                        </div>
+                        <div className="grid grid-cols-2 lg:col-span-2 gap-12 mt-12 lg:mt-0">
+                            <div className="space-y-10">
+                                <h4 className="font-black text-white uppercase tracking-[0.3em] text-[11px]">Links</h4>
+                                <ul className="space-y-6 text-[12px] font-black uppercase tracking-widest text-slate-500">
+                                    <li><a href="#home" className="hover:text-white transition-colors">Home Page</a></li>
+                                    <li><a href="#about" className="hover:text-white transition-colors">Our Approach</a></li>
+                                    <li><a href="#reviews" className="hover:text-white transition-colors">Success Stories</a></li>
+                                </ul>
+                            </div>
+                            <div className="space-y-10">
+                                <h4 className="font-black text-white uppercase tracking-[0.3em] text-[11px]">Contact</h4>
+                                <ul className="space-y-6 text-[12px] font-black uppercase tracking-widest text-slate-500">
+                                    <li><a href="tel:+918077978440" className="text-white hover:text-blue-400 transition-colors">+91 8077978440</a></li>
+                                    <li><a href="#appointment" className="text-orange-500 hover:text-white transition-colors">Schedule Visit</a></li>
+                                    <li><span className="text-slate-700 italic lowercase font-medium">New Delhi, India</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const Background = ({ videoSrc, darkMode }) => (
+            <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+                {videoSrc ? <video key={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover opacity-60 dark:opacity-30"><source src={videoSrc} type="video/mp4" /></video> : <div className="mesh-gradient"></div>}
+                <div className={`absolute inset-0 transition-all duration-700 ${darkMode ? 'bg-slate-950/50' : 'bg-white/10'}`}></div>
+            </div>
+        );
+
+        const SettingsPanel = ({ isOpen, onClose, darkMode, setDarkMode, onVideoUpload, onVideoRemove, hasVideo }) => (
+            <div className={`fixed inset-y-0 right-0 z-[200] w-full sm:w-[400px] settings-panel p-10 sm:p-14 transition-all duration-500 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <div className="flex items-center justify-between mb-16">
+                    <h3 className="text-2xl font-[900] text-slate-900 dark:text-white tracking-tight">Display Config</h3>
+                    <button onClick={onClose} className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white">✕</button>
+                </div>
+                <div className="space-y-16">
+                    <div className="space-y-6">
+                        <label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Vibe Selection</label>
+                        <button onClick={() => setDarkMode(!darkMode)} className="w-full flex items-center justify-between p-7 rounded-[2rem] bg-slate-100/50 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700">
+                            <span className="font-bold text-slate-700 dark:text-white text-base">{darkMode ? 'Deep Mode' : 'Glow Mode'}</span>
+                            <div className={`h-7 w-12 rounded-full relative transition-colors ${darkMode ? 'bg-blue-600' : 'bg-slate-300'}`}><div className={`absolute top-1.5 h-4 w-4 bg-white rounded-full shadow-lg transition-all ${darkMode ? 'left-6.5' : 'left-1.5'}`}></div></div>
+                        </button>
+                    </div>
+                    <div className="space-y-6">
+                        <label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Visual Background</label>
+                        {!hasVideo ? (
+                            <div className="relative overflow-hidden group">
+                                <input type="file" accept="video/*" onChange={onVideoUpload} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                                <div className="w-full p-12 rounded-[3.5rem] border-3 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center gap-5 bg-slate-50/50 dark:bg-slate-900/40"><span className="text-4xl opacity-50">📹</span><span className="text-[11px] font-black uppercase tracking-widest text-slate-500">Pick MP4 Video</span></div>
+                            </div>
+                        ) : (
+                            <button onClick={onVideoRemove} className="w-full p-7 rounded-[2rem] border border-red-200 bg-red-50 flex items-center justify-between"><span className="font-black text-red-600">Clear Video</span><span>🗑️</span></button>
+                        )}
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">Note: Local video files are temporary.</p>
+                    </div>
+                    <button onClick={onClose} className="w-full py-6 rounded-[2rem] bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black text-[11px] uppercase tracking-[0.25em]">Save & Exit</button>
+                </div>
+            </div>
+        );
+
+        const App = () => {
+            const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+            const [isSettingsOpen, setIsSettingsOpen] = React.useState(false);
+            const [darkMode, setDarkMode] = React.useState(false);
+            const [videoSrc, setVideoSrc] = React.useState(null);
+            const [reviews, setReviews] = React.useState([]);
+            const [loading, setLoading] = React.useState(false);
+            const [formData, setFormData] = React.useState({ name: '', condition: '', review_text: '' });
+            const [lastReviewDate, setLastReviewDate] = React.useState(null);
+
+            const navItems = ["Home", "About", "Services", "Reviews", "Contact"];
+
+            const services = [
+                { title: 'Back Pain', description: 'Natural structural alignment.', image: 'nuero.backpain.jpeg' },
+                { title: 'Gastro', description: 'Safe, non-surgical therapy.', image: 'nuero.gastro.jpeg' },
+                { title: 'Sciatica', description: 'Nerve compression relief.', image: 'nuero.sciatica.jpeg' },
+                { title: 'Cervical', description: 'Precision neck recovery.', image: 'nuero.cervical.jpeg' },
+                { title: 'Knee Pain', description: 'Complete joint mobility.', image: 'nuero.kneepain.jpeg' },
+                { title: 'Migraine', description: 'Chemical balance therapy.', image: 'nuero.migrane.jpeg' }
+            ];
+
+            const fetchReviews = async () => {
+                setLoading(true);
+                if (supabase) {
+                    const { data, error } = await supabase
+                        .from('reviews')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (data) {
+                        setReviews(data);
+                        if (data[0]) {
+                            setLastReviewDate(new Date(data[0].created_at).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}));
+                        }
+                    }
+                } else {
+                    const local = JSON.parse(localStorage.getItem('painfree_reviews')) || [];
+                    setReviews(local);
+                }
+                setLoading(false);
+            };
+
+            const submitReview = async () => {
+                setLoading(true);
+                const newR = { ...formData };
+                
+                if (supabase) {
+                    const { error } = await supabase.from('reviews').insert([newR]);
+                    if (!error) {
+                        setFormData({ name: '', condition: '', review_text: '' });
+                        fetchReviews();
+                    }
+                } else {
+                    const l = JSON.parse(localStorage.getItem('painfree_reviews')) || [];
+                    localStorage.setItem('painfree_reviews', JSON.stringify([{...newR, created_at: new Date().toISOString()}, ...l]));
+                    setFormData({ name: '', condition: '', review_text: '' });
+                    fetchReviews();
+                }
+                setLoading(false);
+            };
+
+            const handleVideoUpload = (e) => {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('video/')) {
+                    if (videoSrc) URL.revokeObjectURL(videoSrc);
+                    setVideoSrc(URL.createObjectURL(file));
+                }
+            };
+
+            const handleVideoRemove = () => { if (videoSrc) URL.revokeObjectURL(videoSrc); setVideoSrc(null); };
+
+            React.useEffect(() => { 
+                fetchReviews(); 
+                setDarkMode(localStorage.getItem('painfree_dark') === 'true');
+            }, []);
+
+            React.useEffect(() => {
+                document.documentElement.className = darkMode ? 'dark' : '';
+                localStorage.setItem('painfree_dark', darkMode);
+            }, [darkMode]);
+
+            return (
+                <div className="min-h-screen text-slate-700 dark:text-slate-300">
+                    <Background videoSrc={videoSrc} darkMode={darkMode} />
+                    <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} darkMode={darkMode} setDarkMode={setDarkMode} onVideoUpload={handleVideoUpload} onVideoRemove={handleVideoRemove} hasVideo={!!videoSrc}/>
+                    <Navbar navItems={navItems} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+                    <main>
+                        <Hero />
+                        <About />
+                        <section id="services" className="py-24 lg:py-40 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white dark:via-slate-950/80 dark:to-slate-950"></div>
+                            <div className="relative mx-auto max-w-7xl px-4 lg:px-8 z-10">
+                                <div className="text-center mb-24 px-4">
+                                    <span className="font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] text-[11px]">Specialized Care</span>
+                                    <h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Home-Based Clinical Excellence</h2>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
+                                    {services.map((item, idx) => (
+                                        <div key={idx} className="card-bg rounded-[3rem] overflow-hidden card-hover group shadow-2xl flex flex-col">
+                                            <div className="h-64 sm:h-72 overflow-hidden relative">
+                                                <img 
+                                                    src={item.image} 
+                                                    alt={item.title} 
+                                                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                                                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800'; }}
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                            </div>
+                                            <div className="p-10 flex-grow text-center">
+                                                <h3 className="font-[900] text-slate-900 dark:text-white text-2xl mb-4 tracking-tight">{item.title}</h3>
+                                                <p className="text-sm font-bold text-slate-600 dark:text-slate-400 leading-relaxed uppercase tracking-wider">{item.description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                        <section id="case-studies" className="py-24 lg:py-48 bg-slate-950 text-white relative">
+                            <div className="mx-auto max-w-7xl px-4 lg:px-8 grid gap-24 lg:grid-cols-2 lg:items-center">
+                                <div>
+                                    <span className="font-black text-orange-500 uppercase tracking-[0.3em] text-[11px]">Real Success</span>
+                                    <h2 className="mt-10 text-4xl sm:text-6xl lg:text-7xl font-[900] leading-[1.05] tracking-tight">Chronic Pain <br /><span className="text-blue-400 font-medium italic">Vanquished.</span></h2>
+                                    <p className="mt-12 text-lg sm:text-xl font-bold text-slate-300">Patient recovered from severe cervical radiculopathy without medication.</p>
+                                </div>
+                                <div className="aspect-square rounded-[4rem] overflow-hidden shadow-3xl bg-white/5 p-4 border border-white/10"><img src="nuero.about.jpeg" className="h-full w-full object-cover rounded-[3.5rem]" alt="Success Story" /></div>
+                            </div>
+                        </section>
+                        <Reviews reviews={reviews} loading={loading} onSubmitReview={submitReview} formData={formData} setFormData={setFormData} lastReviewDate={lastReviewDate} />
+                        <Appointment />
+                    </main>
+                    <Footer />
+                    <button onClick={() => setIsSettingsOpen(true)} className="fixed bottom-36 right-8 z-[150] h-16 w-16 bg-white dark:bg-slate-800 rounded-2xl shadow-3xl flex items-center justify-center border border-slate-100 dark:border-slate-700 active:scale-90 transition-all shadow-xl"><span className="text-3xl">⚙️</span></button>
+                                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="fixed bottom-10 right-8 z-[150] h-20 w-20 bg-emerald-500 rounded-[2.25rem] shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all text-white text-4xl">💬</a>
+                </div>
+            );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
-  </body>
+</body>
 </html>
-
