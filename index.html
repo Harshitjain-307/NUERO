@@ -33,7 +33,6 @@
             --text-primary: #f8fafc; 
             --card-bg: #0f172a; 
         }
-        
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg-primary); 
@@ -41,7 +40,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
             overflow-x: hidden;
         }
-
         .glass-header { 
             background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(16px); 
@@ -52,7 +50,6 @@
             background: rgba(2, 6, 23, 0.85); 
             border-color: rgba(30, 41, 59, 0.5); 
         }
-        
         .mesh-gradient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background-color: var(--bg-primary);
@@ -71,35 +68,14 @@
                 radial-gradient(at 0% 100%, hsla(200,30%,14%,1) 0, transparent 50%);
             opacity: 1;
         }
-        
         .card-bg { 
             background-color: var(--card-bg); 
             border: 1px solid rgba(148, 163, 184, 0.1); 
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
         }
         .dark .card-bg { border-color: rgba(51, 65, 85, 0.4); }
-        
         .card-hover { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover { transform: translateY(-10px); box-shadow: 0 30px 45px -12px rgb(0 0 0 / 0.12); }
-        
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-        .animate-float { animation: float 12s ease-in-out infinite; }
-        
-        .text-gradient { 
-            color: var(--accent-blue);
-            background: linear-gradient(to right, var(--accent-blue), #3b82f6); 
-            -webkit-background-clip: text; 
-            background-clip: text; 
-        }
-        .dark .text-gradient {
-            background: linear-gradient(to right, #60a5fa, #93c5fd); 
-            -webkit-background-clip: text; 
-            background-clip: text;
-        }
-        @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-            .text-gradient { -webkit-text-fill-color: transparent; }
-        }
-        
         .settings-panel { 
             backdrop-filter: blur(28px); 
             -webkit-backdrop-filter: blur(28px);
@@ -107,7 +83,6 @@
             box-shadow: -10px 0 50px rgba(3, 2, 2, 0.1);
         }
         .dark .settings-panel { background: rgba(2, 6, 23, 0.98); }
-
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb { background: #e2e8f0; border: 3px solid var(--bg-primary); border-radius: 10px; }
@@ -118,27 +93,24 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- CONFIG ---
         const WHATSAPP_NUMBER = "918077978440";
         const SUPABASE_URL = "https://lzrffwpsezlyxlcrzufz.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_pE0xuK4Q7eGQvPWdgqRqmQ_4vw6o_1S"; 
         const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-        // --- COMPONENTS ---
-
         const Navbar = ({ navItems, isMenuOpen, setIsMenuOpen }) => (
-            <header className="sticky top-0 z-[100] glass-header shadow-sm transition-all">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
-                    <a href="#home" className="flex items-center gap-4 shrink-0 group transition-transform hover:scale-[1.02]">
-                        <div className="h-14 sm:h-16 w-14 sm:w-16 overflow-hidden rounded-2xl bg-[#020617] shadow-xl border border-slate-800 p-0.5">
+            <header className="sticky top-0 z-[100] glass-header shadow-sm transition-all h-[72px] sm:h-[88px] flex items-center">
+                <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-8">
+                    <a href="#home" className="flex items-center gap-3 sm:gap-4 shrink-0 group transition-transform hover:scale-[1.02]">
+                        <div className="h-12 w-12 sm:h-16 sm:w-16 overflow-hidden rounded-2xl bg-[#020617] shadow-lg border border-slate-800 p-0.5">
                             <img src="logo.painfreenew.jpeg" alt="Painfree Delhi" className="h-full w-full object-contain" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl sm:text-2xl font-[900] leading-none tracking-tight">
+                            <span className="text-lg sm:text-2xl font-[900] leading-none tracking-tight">
                                 <span className="text-slate-900 dark:text-blue-400">Painfree</span>
                                 <span className="text-orange-600">.Delhi</span>
                             </span>
-                            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500 mt-0.5">Neurotherapy Care</span>
+                            <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-500 mt-0.5">Neurotherapy Care</span>
                         </div>
                     </a>
 
@@ -151,42 +123,29 @@
                             </a>
                         ))}
                         <div className="flex items-center gap-4 ml-6">
-                            <a href="tel:+918077978440" className="text-sm font-extrabold text-slate-900 dark:text-white px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">
-                                📞 +91 8077978440
-                            </a>
-                            <a href="#appointment" className="rounded-2xl bg-emerald-600 px-8 py-3 text-sm font-black text-white hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-200 dark:shadow-none">
-                                Book Now
-                            </a>
+                            <a href="tel:+918077978440" className="text-sm font-extrabold text-slate-900 dark:text-white px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all">📞 +91 8077978440</a>
+                            <a href="#appointment" className="rounded-2xl bg-emerald-600 px-8 py-3 text-sm font-black text-white hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-200 dark:shadow-none">Book Now</a>
                         </div>
                     </nav>
 
-                    <button className="flex h-11 w-11 items-center justify-center rounded-xl lg:hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm" 
-                            onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
-                        <div className="relative w-5 h-4">
-                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all ${isMenuOpen ? 'top-2 rotate-45' : 'top-0'}`}></span>
-                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full top-2 transition-all ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-                            <span className={`absolute h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all ${isMenuOpen ? 'top-2 -rotate-45' : 'top-4'}`}></span>
+                    <button className="flex h-11 w-11 items-center justify-center rounded-xl lg:hidden bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle Menu">
+                        <div className="relative w-5 h-4 flex flex-col justify-between items-center">
+                            <span className={`block h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`}></span>
+                            <span className={`block h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
+                            <span className={`block h-0.5 w-full bg-slate-800 dark:bg-white rounded-full transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`}></span>
                         </div>
                     </button>
                 </div>
 
                 {isMenuOpen && (
-                    <div className="fixed inset-x-0 top-[65px] h-[calc(100vh-65px)] bg-white dark:bg-slate-950 lg:hidden animate-fade-in-down overflow-hidden pt-10 px-6 backdrop-blur-3xl z-[200]">
+                    <div className="fixed inset-x-0 top-[72px] sm:top-[88px] h-screen bg-white dark:bg-slate-950 lg:hidden pt-10 px-6 backdrop-blur-3xl z-[200]">
                         <nav className="flex flex-col gap-2">
                             {navItems.map(item => (
-                                <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} 
-                                   className="py-5 px-6 text-lg font-black text-slate-900 dark:text-white active:bg-slate-50 dark:active:bg-slate-900 rounded-3xl transition-all"
-                                   onClick={() => setIsMenuOpen(false)}>
-                                    {item}
-                                </a>
+                                <a key={item} href={`#${item.toLowerCase().replace(/\s+/g, '-')}`} className="py-5 px-6 text-lg font-black text-slate-900 dark:text-white active:bg-slate-50 dark:active:bg-slate-900 rounded-3xl transition-all" onClick={() => setIsMenuOpen(false)}>{item}</a>
                             ))}
                             <div className="mt-10 grid gap-4">
-                                <a href="tel:+918077978440" className="flex items-center justify-center gap-4 py-5 rounded-3xl bg-slate-100 dark:bg-slate-900 font-black text-slate-900 dark:text-white">
-                                    <span className="text-xl">📞</span> +91 8077978440
-                                </a>
-                                <a href="#appointment" className="flex items-center justify-center gap-4 py-6 rounded-3xl bg-emerald-600 font-black text-white active:scale-[0.98] transition-all" onClick={() => setIsMenuOpen(false)}>
-                                    Book Free Consultation
-                                </a>
+                                <a href="tel:+918077978440" className="flex items-center justify-center gap-4 py-5 rounded-3xl bg-slate-100 dark:bg-slate-900 font-black text-slate-900 dark:text-white">📞 +91 8077978440</a>
+                                <a href="#appointment" className="flex items-center justify-center gap-4 py-6 rounded-3xl bg-emerald-600 font-black text-white active:scale-[0.98] transition-all" onClick={() => setIsMenuOpen(false)}>Book Free Consultation</a>
                             </div>
                         </nav>
                     </div>
@@ -195,45 +154,31 @@
         );
 
         const Hero = () => (
-            <section id="home" className="relative overflow-hidden py-16 lg:py-32">
+            <section id="home" className="relative overflow-hidden py-12 lg:py-32">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="grid gap-20 lg:grid-cols-2 lg:items-center">
+                    <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
                         <div className="text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2.5 rounded-full bg-blue-50/80 dark:bg-blue-900/20 px-5 py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-[#1e40af] dark:text-blue-400 border border-blue-100 dark:border-blue-800 shadow-sm mb-10">
-                                Premium Home-Visit Neurotherapy in Delhi
-                            </div>
-                            <h1 className="text-4xl sm:text-6xl xl:text-[68px] font-[900] leading-[1.1] text-slate-900 dark:text-white tracking-tight">
-                                Natural Pain Relief at Your Doorstep — <br className="hidden md:block" />
-                                <span className="text-emerald-600 dark:text-emerald-400">Move Better, Live Better.</span>
-                            </h1>
-                            <p className="mt-8 text-lg sm:text-xl font-bold leading-relaxed text-slate-700 dark:text-slate-300 lg:pr-24 max-w-2xl mx-auto lg:mx-0">
-                                Skip the medicines and clinic queues. Experience certified neurotherapy that activates your body's natural healing in the comfort of your home.
-                            </p>
+                            <div className="inline-flex items-center gap-2.5 rounded-full bg-blue-50/80 dark:bg-blue-900/20 px-5 py-2.5 text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-[#1e40af] dark:text-blue-400 border border-blue-100 dark:border-blue-800 mb-8 sm:mb-10">Premium Home-Visit Neurotherapy in Delhi</div>
+                            <h1 className="text-4xl sm:text-6xl xl:text-[68px] font-[900] leading-[1.1] text-slate-900 dark:text-white tracking-tight">Natural Pain Relief at Your Doorstep — <br className="hidden md:block" /><span className="text-emerald-600 dark:text-emerald-400">Move Better, Live Better.</span></h1>
+                            <p className="mt-8 text-lg sm:text-xl font-bold leading-relaxed text-slate-700 dark:text-slate-300 lg:pr-24 max-w-2xl mx-auto lg:mx-0">Skip the medicines and clinic queues. Experience certified neurotherapy that activates your body's natural healing in the comfort of your home.</p>
                             <div className="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-                                <a href="#appointment" className="rounded-[1.75rem] bg-[#1e40af] px-12 py-5 text-center text-base font-black text-white shadow-2xl shadow-blue-200 dark:shadow-none transition-all hover:bg-blue-800 hover:-translate-y-1 active:scale-95 uppercase tracking-widest">
-                                    Book Visit
-                                </a>
-                                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="flex items-center justify-center gap-3 rounded-[1.75rem] bg-emerald-500 px-12 py-5 text-center text-base font-black text-white shadow-xl shadow-emerald-100 dark:shadow-none transition-all hover:bg-emerald-600 hover:-translate-y-1 active:scale-95 uppercase tracking-widest">
-                                    <span>💬</span> Chat Now
-                                </a>
+                                <a href="#appointment" className="rounded-[1.75rem] bg-[#1e40af] px-12 py-5 text-center text-base font-black text-white shadow-2xl transition-all hover:bg-blue-800 hover:-translate-y-1 active:scale-95 uppercase tracking-widest">Book Visit</a>
+                                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="flex items-center justify-center gap-3 rounded-[1.75rem] bg-emerald-500 px-12 py-5 text-center text-base font-black text-white shadow-xl transition-all hover:bg-emerald-600 hover:-translate-y-1 active:scale-95 uppercase tracking-widest"><span>💬</span> Chat Now</a>
                             </div>
-                            
-                            <div className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 border-t border-slate-200/60 dark:border-slate-800 pt-12 max-w-lg mx-auto lg:mx-0">
-                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">100+</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Recovered</div></div>
-                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">7+</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Experience</div></div>
-                                <div><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white">5/5</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">Rating</div></div>
+                            <div className="mt-16 flex flex-wrap justify-center lg:justify-start gap-10 sm:gap-14 border-t border-slate-200/60 dark:border-slate-800 pt-10 max-w-2xl mx-auto lg:mx-0">
+                                <div className="text-center lg:text-left"><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white tracking-tight">100+</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500/80 mt-2">Recovered</div></div>
+                                <div className="text-center lg:text-left"><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white tracking-tight">2+ Year</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500/80 mt-2">Experience</div></div>
+                                <div className="text-center lg:text-left"><div className="text-3xl sm:text-4xl font-[900] text-slate-900 dark:text-white tracking-tight">Home</div><div className="text-[10px] font-black uppercase tracking-widest text-slate-500/80 mt-2">Direct Visit</div></div>
                             </div>
                         </div>
                         <div className="relative group perspective-1000">
-                            <div className="relative overflow-hidden rounded-[4rem] card-bg p-4 shadow-3xl transition-all duration-700 hover:rotate-2">
+                            <div className="relative overflow-hidden rounded-[4rem] card-bg p-4 shadow-3xl transition-all duration-700">
                                 <img src="nuero.himanshu.jpeg" alt="Therapist Himanshu" className="aspect-[4/5] lg:aspect-square h-[450px] sm:h-[550px] lg:h-[700px] w-full rounded-[3.5rem] object-cover object-[center_15%]" />
-                                <div className="absolute bottom-10 left-10 right-10 rounded-[2.5rem] bg-white/95 dark:bg-slate-900/95 p-8 shadow-2xl backdrop-blur-xl border border-white/50 dark:border-white/10">
+                                <div className="absolute bottom-6 sm:bottom-10 left-6 sm:left-10 right-6 sm:right-10 rounded-[2.5rem] bg-white/95 dark:bg-slate-900/95 p-6 sm:p-8 shadow-2xl backdrop-blur-xl border border-white/50 dark:border-white/10">
                                     <div className="flex items-center gap-5">
-                                        <div className="h-14 w-14 rounded-full overflow-hidden border-2 border-slate-100 dark:border-slate-800 bg-white shrink-0">
-                                            <img src="nuero.himanshu.jpeg" alt="Avatar" className="h-full w-full object-cover object-top" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xl font-black text-slate-900 dark:text-white tracking-tight">Himanshu Yadav</div>
+                                        <div className="h-14 w-14 rounded-full overflow-hidden bg-white shrink-0"><img src="nuero.himanshu.jpeg" alt="Avatar" className="h-full w-full object-cover object-top" /></div>
+                                        <div className="overflow-hidden">
+                                            <div className="text-xl font-black text-slate-900 dark:text-white tracking-tight truncate">Himanshu Yadav</div>
                                             <div className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Certified Neurotherapist</div>
                                         </div>
                                     </div>
@@ -246,99 +191,62 @@
         );
 
         const About = () => (
-            <section id="about" className="py-24 lg:py-40 relative">
+            <section id="about" className="py-20 lg:py-40 relative">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="text-center mb-20 max-w-3xl mx-auto">
+                    <div className="text-center mb-16 sm:mb-24 max-w-3xl mx-auto">
                         <span className="font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] text-[11px]">Clinical Standards</span>
-                        <h2 className="mt-6 text-4xl lg:text-6xl font-[900] text-slate-900 dark:text-slate-100 leading-tight tracking-tight">
-                            Natural Healing, <br/><span className="text-slate-400 italic font-medium">Delivered to Your Door.</span>
-                        </h2>
+                        <h2 className="mt-6 text-4xl lg:text-6xl font-[900] text-slate-900 dark:text-slate-100 leading-tight tracking-tight">Natural Healing, <br/><span className="text-slate-400 italic font-medium">Delivered to Your Door.</span></h2>
                     </div>
-
-                    <div className="grid gap-10 lg:grid-cols-2 lg:items-stretch">
-                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
-                            <div className="h-16 w-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🏠</div>
-                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Who We Are</h3>
-                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
-                                We are dedicated neurotherapy specialists providing personalized, <span className="text-blue-600 dark:text-blue-400">home-visit</span> care for chronic ailments. With <span className="text-slate-900 dark:text-white">2+ years</span> of clinical excellence, we have empowered countless patients in Delhi to recover and <span className="text-orange-600">avoid surgeries</span> through precision-led natural healing.
-                            </p>
-                        </div>
-
-                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
-                            <div className="h-16 w-16 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🌱</div>
-                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Our Mission</h3>
-                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
-                                To deliver safe, effective, and <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">natural pain relief </span> without reliance on medicine. We dive deep into the root cause of imbalance, ensuring our patients achieve a <span className="text-slate-900 dark:text-white">pain-free life</span> within the comfort and privacy of their own homes.
-                            </p>
-                        </div>
-
-                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
-                            <div className="h-16 w-16 bg-orange-50 dark:bg-orange-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🎯</div>
-                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">Our Vision</h3>
-                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
-                                To cultivate a healthier community where people can live <span className="text-orange-600 font-extrabold">without depending on medicines</span>. We strive to make professional neurotherapy accessible and raise awareness for sustainable, medicine-free living across all ages.
-                            </p>
-                        </div>
-
-                        <div className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl shadow-slate-100/50 dark:shadow-none flex flex-col justify-center">
-                            <div className="h-16 w-16 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-center text-3xl mb-10 shadow-inner">🤝</div>
-                            <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">What We Do</h3>
-                            <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300">
-                                We focus on identifying the root cause of your health concerns—understanding where the imbalance actually begins rather than just treating symptoms. Through targeted therapy points, we gently stimulate the body’s natural healing mechanisms, helping organs restore their balance without any pain. Our approach is holistic, precise, and designed to bring long-term wellness by correcting the source of the problem.
-                            </p>
-                        </div>
+                    <div className="grid gap-8 lg:grid-cols-2 lg:items-stretch">
+                        {[
+                            { icon: '🏠', title: 'Who We Are', color: 'blue', desc: 'We are dedicated neurotherapy specialists providing personalized, <span class="text-blue-600">home-visit</span> care for chronic ailments. With <span class="text-slate-900 dark:text-white">2+ years</span> of clinical excellence, we avoid surgeries through precision natural healing.' },
+                            { icon: '🌱', title: 'Our Mission', color: 'emerald', desc: 'To deliver safe, effective, and <span class="text-emerald-600 font-extrabold">medicine-free relief</span>. We stimulate the body\'s natural healing mechanisms within the comfort and privacy of your own homes.' },
+                            { icon: '🎯', title: 'Our Vision', color: 'orange', desc: 'A healthier community living <span class="text-orange-600 font-extrabold">without medicines</span>. We strive to make professional neurotherapy accessible for sustainable wellness across all ages.' },
+                            { icon: '🤝', title: 'What We Do', color: 'indigo', desc: 'Identify the root cause of imbalance rather than just treating symptoms. Through precision therapy points, we restore organ balance holistically and corrected at the source.' }
+                        ].map((box, i) => (
+                            <div key={i} className="p-10 sm:p-14 bg-white dark:bg-slate-900/50 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-xl flex flex-col justify-center">
+                                <div className={`h-16 w-16 bg-${box.color}-50 dark:bg-${box.color}-900/20 rounded-2xl flex items-center justify-center text-3xl mb-8`}>{box.icon}</div>
+                                <h3 className="text-2xl font-[900] text-slate-900 dark:text-slate-100 mb-6 tracking-tight">{box.title}</h3>
+                                <p className="text-lg font-bold leading-relaxed text-slate-700 dark:text-slate-300" dangerouslySetInnerHTML={{__html: box.desc}}></p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
         );
 
         const Reviews = ({ reviews, loading, onSubmitReview, formData, setFormData, lastReviewDate }) => (
-            <section id="reviews" className="py-24 lg:py-40 relative">
+            <section id="reviews" className="py-20 lg:py-40 relative">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="text-center mb-20">
+                    <div className="text-center mb-16 sm:mb-20">
                         <span className="font-black text-orange-500 uppercase tracking-[0.3em] text-[11px]">Patient Stories</span>
                         <h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Verified Recovery Reports</h2>
-                        {lastReviewDate && <div className="mt-10 inline-block px-8 py-3 rounded-full bg-blue-50/80 dark:bg-blue-900/20 shadow-sm text-[11px] font-black text-blue-700 dark:text-blue-400 uppercase tracking-widest border border-blue-100/50 dark:border-blue-900/30">Last Updated: {lastReviewDate}</div>}
+                        {lastReviewDate && <div className="mt-8 inline-block px-6 py-2.5 rounded-full bg-blue-50/80 dark:bg-blue-900/20 text-[10px] font-black text-blue-700 dark:text-blue-400 uppercase tracking-widest border border-blue-100/50">Last Updated: {lastReviewDate}</div>}
                     </div>
-                    <div className="grid gap-8 sm:gap-12 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {reviews.length > 0 ? reviews.map((r, i) => (
-                            <div key={i} className="rounded-[3.5rem] card-bg p-12 shadow-xl card-hover flex flex-col justify-between">
-                                <div>
-                                    <div className="flex gap-1.5 mb-10 text-orange-400/60">{"★".repeat(5)}</div>
-                                    <p className="text-lg font-bold leading-[1.7] text-slate-700 dark:text-slate-300 italic">"{r.review_text}"</p>
-                                </div>
-                                <div className="mt-12 flex items-center gap-5">
-                                    <div className="h-14 w-14 rounded-[1.25rem] bg-slate-50 dark:bg-slate-800 flex items-center justify-center font-black text-slate-900 dark:text-blue-400 text-xl">{r.name ? r.name[0].toUpperCase() : "P"}</div>
-                                    <div>
-                                        <div className="font-[900] text-slate-900 dark:text-white text-base">{r.name || "Patient"}</div>
-                                        <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-1">{r.condition || "Recovered"}</div>
+                            <div key={i} className="rounded-[3.25rem] card-bg p-10 sm:p-12 shadow-xl flex flex-col justify-between overflow-hidden">
+                                <div><div className="flex gap-1.5 mb-8 text-orange-400/60">{"★".repeat(5)}</div><p className="text-lg font-bold leading-[1.6] text-slate-700 dark:text-slate-300 italic whitespace-normal break-words">"{r.review_text}"</p></div>
+                                <div className="mt-10 flex items-center gap-5">
+                                    <div className="h-14 w-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center font-black text-slate-900 dark:text-blue-400 text-xl shrink-0">{r.name ? r.name[0].toUpperCase() : "P"}</div>
+                                    <div className="overflow-hidden">
+                                        <div className="font-[900] text-slate-900 dark:text-white text-base truncate">{r.name || "Patient"}</div>
+                                        <div className="text-[11px] font-black text-slate-500 uppercase tracking-widest mt-1 truncate">{r.condition || "Recovered"}</div>
                                     </div>
                                 </div>
                             </div>
-                        )) : <div className="col-span-full py-24 text-center text-slate-500 text-xl font-black italic">No feedback stories shared yet...</div>}
+                        )) : <div className="col-span-full py-20 text-center text-slate-500 font-black italic">No feedback stories shared yet...</div>}
                     </div>
-                    <div className="mt-28 rounded-[4rem] card-bg shadow-2xl lg:flex items-stretch overflow-hidden border border-slate-100 dark:border-slate-800">
-                        <div className="bg-[#1e40af] p-16 lg:w-2/5 flex flex-col justify-center text-white relative lg:rounded-r-[5rem]">
-                            <h3 className="text-4xl font-[900] mb-8 leading-tight">Help Others Find <br />Natural Relief</h3>
-                            <p className="text-blue-100/80 font-bold uppercase tracking-widest text-[11px]">Your honest feedback helps the people of Delhi choose better healing paths.</p>
-                        </div>
-                        <div className="p-10 lg:p-20 lg:w-3/5">
-                            <form onSubmit={(e) => { e.preventDefault(); onSubmitReview(); }} className="space-y-8">
-                                <div className="grid gap-8 sm:grid-cols-2">
-                                    <div className="space-y-3">
-                                        <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label>
-                                        <input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" placeholder="John Doe" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
-                                    </div>
-                                    <div className="space-y-3">
-                                        <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Condition Treated</label>
-                                        <input value={formData.condition} onChange={e => setFormData({...formData, condition: e.target.value})} type="text" placeholder="e.g. Back Pain" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" />
-                                    </div>
+                    <div className="mt-20 sm:mt-28 rounded-[3.5rem] card-bg lg:flex items-stretch overflow-hidden">
+                        <div className="bg-[#1e40af] p-12 lg:w-2/5 flex flex-col justify-center text-white text-center lg:text-left"><h3 className="text-3xl sm:text-4xl font-[900] mb-8 leading-tight">Help Others Find <br className="hidden sm:block" />Natural Relief</h3><p className="text-blue-100/80 font-bold uppercase tracking-widest text-[11px]">Your honest feedback helps Choose better paths.</p></div>
+                        <div className="p-8 sm:p-20 lg:w-3/5">
+                            <form onSubmit={e => { e.preventDefault(); onSubmitReview(); }} className="space-y-6 sm:space-y-8">
+                                <div className="grid gap-6 sm:gap-8 sm:grid-cols-2">
+                                    <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label><input value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} type="text" placeholder="John Doe" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required/></div>
+                                    <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Condition</label><input value={formData.condition} onChange={e => setFormData({...formData, condition: e.target.value})} type="text" placeholder="e.g. Back Pain" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" /></div>
                                 </div>
-                                <div className="space-y-3">
-                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Your Story</label>
-                                    <textarea value={formData.review_text} onChange={e => setFormData({...formData, review_text: e.target.value})} placeholder="Describe your recovery..." rows="4" className="w-full rounded-[1.5rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-6 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required></textarea>
-                                </div>
-                                <button type="submit" disabled={loading} className="w-full lg:w-max rounded-[1.5rem] bg-orange-500 px-14 py-5 font-black text-white hover:bg-orange-600 transition-all uppercase tracking-[0.2em]">{loading ? "Publishing..." : "Post Review"}</button>
+                                <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Your Story</label><textarea value={formData.review_text} onChange={e => setFormData({...formData, review_text: e.target.value})} placeholder="Describe your recovery..." rows="4" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required></textarea></div>
+                                <button type="submit" disabled={loading} className="w-full lg:w-max rounded-2xl bg-orange-500 px-14 py-4.5 font-black text-white hover:bg-orange-600 transition-all uppercase tracking-widest">{loading ? "Publishing..." : "Post Review"}</button>
                             </form>
                         </div>
                     </div>
@@ -350,110 +258,48 @@
             const [localLoading, setLocalLoading] = React.useState(false);
             const [status, setStatus] = React.useState("");
             const [locationSuccess, setLocationSuccess] = React.useState(false);
-            const [aptData, setAptData] = React.useState({
-                name: '', phone: '', service: '', date: '', time: '', location: ''
-            });
-
+            const [aptData, setAptData] = React.useState({ name: '', phone: '', service: '', date: '', location: '' });
             const getLiveLocation = () => {
-                if (!navigator.geolocation) {
-                    setStatus("Location access not supported by your browser.");
-                    return;
-                }
-                
-                setLocalLoading(true);
-                setLocationSuccess(false);
-                setStatus("Fetching your location...");
-                
-                navigator.geolocation.getCurrentPosition(
-                    async (pos) => {
-                        const { latitude, longitude } = pos.coords;
-                        try {
-                            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`, {
-                                headers: { 'Accept-Language': 'en' }
-                            });
-                            
-                            if (!res.ok) throw new Error("Reverse geocoding failed");
-                            
-                            const data = await res.json();
-                            const readableAddress = data.display_name || `${data.address?.suburb || ''}, ${data.address?.city || ''}, ${data.address?.postcode || ''}`;
-                            
-                            setAptData(p => ({ ...p, location: readableAddress || `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}` }));
-                            setStatus("Location captured successfully!");
-                            setLocationSuccess(true);
-                        } catch (err) {
-                            setAptData(p => ({ ...p, location: `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}` }));
-                            setStatus("Captured raw coordinates.");
-                            setLocationSuccess(true);
-                        } finally {
-                            setLocalLoading(false);
-                        }
-                    },
-                    (err) => {
-                        let errorMsg = "Unable to fetch location.";
-                        if (err.code === 1) errorMsg = "Permission denied. Please enable GPS.";
-                        else if (err.code === 3) errorMsg = "Request timed out. Please try again.";
-                        
-                        setStatus(errorMsg);
-                        setLocalLoading(false);
-                        setLocationSuccess(false);
-                    },
-                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-                );
+                if (!navigator.geolocation) { setStatus("GPS not supported."); return; }
+                setLocalLoading(true); setLocationSuccess(false); setStatus("Fetching...");
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18`, { headers: { 'Accept-Language': 'en' } });
+                        const data = await res.json();
+                        setAptData(p => ({ ...p, location: data.display_name || `Lat: ${latitude.toFixed(4)}, Lng: ${longitude.toFixed(4)}` }));
+                        setStatus("Location captured!"); setLocationSuccess(true);
+                    } catch (e) { setStatus("Coordinates captured."); setLocationSuccess(true); }
+                    finally { setLocalLoading(false); }
+                }, () => { setStatus("Permission denied."); setLocalLoading(false); }, { timeout: 15000 });
             };
-
-            const submitAppointment = (e) => {
+            const submitAppointment = e => {
                 e.preventDefault();
-                const { name, phone, service, date, time, location } = aptData;
-                if (!/^\d{10}$/.test(phone)) { alert("Need 10-digit phone number."); return; }
-                const msg = `Appointment Request:\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n🩹 Service: ${service}\n📅 Date: ${date} at ${time}\n📍 Location: ${location}`;
+                const { name, phone, service, date, location } = aptData;
+                if (!/^\d{10}$/.test(phone)) { alert("10-digit phone needed."); return; }
+                const msg = `Appointment Request:\n\n👤 Name: ${name}\n📞 Phone: ${phone}\n🩹 Service: ${service}\n📅 Date: ${date}\n📍 Location: ${location}`;
                 window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
             };
-
             return (
-                <section id="appointment" className="py-24 lg:py-40 relative">
+                <section id="appointment" className="py-20 lg:py-40 relative">
                     <div className="mx-auto max-w-5xl px-4 lg:px-8">
-                        <div className="text-center mb-16 px-4">
-                            <span className="font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.3em] text-[11px]">Instant Booking</span>
-                            <h2 className="mt-8 text-4xl lg:text-6xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Schedule Your Visit</h2>
-                            <p className="mt-8 text-lg font-bold text-slate-600 dark:text-slate-400">Professional therapy at your doorstep in Delhi.</p>
-                        </div>
-                        <form onSubmit={submitAppointment} className="rounded-[4rem] card-bg p-8 sm:p-20 shadow-3xl space-y-12 border border-slate-100 dark:border-slate-800 relative overflow-hidden">
-                            <div className="grid gap-10 sm:grid-cols-2">
-                                <div className="space-y-3">
-                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label>
-                                    <input value={aptData.name} onChange={e => setAptData({...aptData, name: e.target.value})} type="text" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp Phone</label>
-                                    <input value={aptData.phone} onChange={e => setAptData({...aptData, phone: e.target.value})} type="tel" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Service Required</label>
-                                    <select value={aptData.service} onChange={e => setAptData({...aptData, service: e.target.value})} className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400">
-                                        <option value="">Select Option</option>
-                                        <option>Back Pain</option>
-                                        <option>Sciatica</option>
-                                        <option>Cervical Pain</option>
-                                        <option>Knee Pain</option>
-                                    </select>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Date</label>
-                                    <input value={aptData.date} onChange={e => setAptData({...aptData, date: e.target.value})} type="date" className="w-full rounded-[1.25rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-5 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400" required/>
-                                </div>
+                        <div className="text-center mb-12 sm:mb-16"><span className="font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest text-[11px]">Instant Booking</span><h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Schedule Your Visit</h2></div>
+                        <form onSubmit={submitAppointment} className="rounded-[3.5rem] card-bg p-8 sm:p-20 shadow-3xl space-y-10 sm:space-y-12">
+                            <div className="grid gap-8 sm:grid-cols-2">
+                                <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Name</label><input value={aptData.name} onChange={e => setAptData({...aptData, name: e.target.value})} type="text" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4.5 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required/></div>
+                                <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">WhatsApp Phone</label><input value={aptData.phone} onChange={e => setAptData({...aptData, phone: e.target.value})} type="tel" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4.5 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required/></div>
+                                <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Service</label><select value={aptData.service} onChange={e => setAptData({...aptData, service: e.target.value})} className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4.5 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required><option value="">Select Option</option><option>Back Pain</option><option>Sciatica</option><option>Cervical Pain</option><option>Knee Pain</option></select></div>
+                                <div className="space-y-3"><label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Date</label><input value={aptData.date} onChange={e => setAptData({...aptData, date: e.target.value})} type="date" className="w-full rounded-2xl border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-7 py-4.5 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required/></div>
                             </div>
-                            <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest text-center block">Detailed Delhi Address</label>
-                                <div className="relative group">
-                                    <input value={aptData.location} onChange={e => setAptData({...aptData, location: e.target.value})} type="text" placeholder="House No, Landmark, Sector..." className="w-full rounded-[2.5rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-10 py-7 pr-40 font-bold text-slate-900 dark:text-white outline-none border transition-all focus:border-blue-400 shadow-inner" required/>
-                                    <button onClick={getLiveLocation} disabled={localLoading} type="button" className={`absolute right-4 top-1/2 -translate-y-1/2 rounded-[1.5rem] px-6 py-4 text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 ${localLoading ? 'bg-slate-200 text-slate-400' : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950'}`}>
-                                        {localLoading ? "Fetching..." : "📍 Get Live"}
-                                    </button>
+                            <div className="space-y-4 pt-6 flex flex-col items-center">
+                                <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest mb-2">Detailed Delhi Address</label>
+                                <div className="relative w-full">
+                                    <input value={aptData.location} onChange={e => setAptData({...aptData, location: e.target.value})} type="text" placeholder="House No, Landmark..." className="w-full rounded-[2.5rem] border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-8 sm:px-10 py-6 sm:py-7 lg:pr-40 font-bold text-slate-900 dark:text-white border outline-none focus:border-blue-400" required/>
+                                    <button onClick={getLiveLocation} disabled={localLoading} type="button" className={`lg:absolute lg:right-4 lg:top-1/2 lg:-translate-y-1/2 w-full lg:w-auto mt-4 lg:mt-0 rounded-[1.5rem] px-8 py-4 text-[11px] font-black uppercase tracking-widest transition-all ${localLoading ? 'bg-slate-200 text-slate-400' : 'bg-slate-900 dark:bg-white text-white dark:text-slate-950'}`}>{localLoading ? "Fetching..." : "📍 Get Live"}</button>
                                 </div>
-                                {status && <p className={`text-center font-black uppercase tracking-widest text-[11px] py-4 transition-all ${locationSuccess ? 'text-emerald-600' : 'text-slate-700 dark:text-slate-400'}`}>{status}</p>}
-                                <p className="text-[10px] text-center text-slate-400 italic">Note: Live location requires HTTPS or Localhost to work securely on browsers.</p>
+                                {status && <p className={`mt-4 font-black uppercase tracking-widest text-[11px] ${locationSuccess ? 'text-emerald-600' : 'text-slate-400'}`}>{status}</p>}
                             </div>
-                            <button type="submit" className="w-full rounded-[2.5rem] bg-emerald-600 py-7 text-base font-[900] text-white shadow-2xl hover:bg-emerald-700 transition-all uppercase tracking-[0.25em]">Send Booking Request</button>
+                            <button type="submit" className="w-full rounded-[2.5rem] bg-emerald-600 py-6 text-base font-[900] text-white shadow-2xl hover:bg-emerald-700 transition-all uppercase tracking-widest">Send Booking Request</button>
                         </form>
                     </div>
                 </section>
@@ -461,80 +307,24 @@
         };
 
         const Footer = () => (
-            <footer id="contact" className="bg-[#020617] pt-28 pb-12 text-slate-400">
+            <footer id="contact" className="bg-[#020617] pt-24 pb-12 text-slate-400 text-center lg:text-left">
                 <div className="mx-auto max-w-7xl px-4 lg:px-8">
-                    <div className="grid gap-20 lg:grid-cols-4">
-                        <div className="lg:col-span-2">
-                            <div className="flex items-center gap-5">
-                                <div className="h-20 sm:h-24 w-20 sm:w-24 overflow-hidden rounded-2xl bg-[#020617] p-1 border border-slate-800"><img src="logo.painfreenew.jpeg" className="h-full w-full object-contain" alt="Logo" /></div>
-                                <span className="text-4xl font-[900] text-white tracking-tight">Painfree<span className="text-orange-500">.Delhi</span></span>
+                    <div className="flex flex-col lg:grid lg:grid-cols-4 gap-20 items-center lg:items-start">
+                        <div className="lg:col-span-2 flex flex-col items-center lg:items-start w-full">
+                            <div className="flex items-center gap-5 justify-center lg:justify-start">
+                                <div className="h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-2xl bg-[#020617] p-1 border border-slate-800"><img src="logo.painfreenew.jpeg" className="h-full w-full object-contain" alt="Logo" /></div>
+                                <span className="text-3xl sm:text-4xl font-[900] text-white tracking-tight">Painfree<span className="text-orange-500">.Delhi</span></span>
                             </div>
-                            <p className="mt-10 text-lg font-bold leading-[1.8] max-w-md text-slate-400">Certified home-visit neurotherapy in Delhi. Activating natural healing for structural recovery without medicines.</p>
-                            
-                            <a href="https://wa.me/918077978440" target="_blank" className="inline-flex items-center gap-3 mt-10 px-8 py-5 rounded-[2rem] bg-emerald-600/10 border border-emerald-600/20 hover:bg-emerald-600/20 active:scale-95 transition-all group">
-                                <svg className="w-6 h-6 fill-emerald-500" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.049-.537c1.026.541 1.956.816 3.241.817 3.189 0 5.766-2.58 5.767-5.768.001-3.188-2.571-5.781-5.769-5.781zm3.434 8.169c-.145.408-.847.839-1.189.879-.341.04-.67.149-1.391-.073-.721-.223-1.637-.624-2.527-1.428-.89-.803-1.492-1.666-1.716-2.146-.223-.48-.023-.741.217-.981.24-.241.48-.56.721-.84.24-.28.32-.48.48-.8.16-.32.08-.6-.04-.84-.12-.24-1.08-2.6-1.481-3.56-.395-.94-.799-.813-1.081-.827h-.921c-.321 0-.841.12-1.282.6-.441.48-1.681 1.641-1.681 4s1.722 4.643 1.962 4.964c.24.321 3.388 5.174 8.205 7.251 1.147.494 2.043.79 2.742.911 1.152.183 2.199.157 3.029.033.911-.137 2.803-1.146 3.193-2.253.391-1.107.391-2.053.273-2.253-.118-.2-.439-.321-.92-.562z"/></svg>
-                                <span className="text-sm font-black text-emerald-500 uppercase tracking-[0.2em]">Chat on WhatsApp</span>
-                            </a>
+                            <p className="mt-8 text-lg font-bold leading-[1.8] max-w-md text-slate-400">Certified home-visit neurotherapy in Delhi. Activating natural healing for structural recovery without medicines.</p>
+                            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="inline-flex items-center gap-3 mt-10 px-8 py-5 rounded-[2rem] bg-emerald-600/10 border border-emerald-600/20 hover:bg-emerald-600/20 transition-all group lg:mx-0 mx-auto w-max"><span className="text-sm font-black text-emerald-500 uppercase tracking-widest">Chat on WhatsApp</span></a>
                         </div>
-                        <div className="grid grid-cols-2 lg:col-span-2 gap-12 mt-12 lg:mt-0">
-                            <div className="space-y-10">
-                                <h4 className="font-black text-white uppercase tracking-[0.3em] text-[11px]">Links</h4>
-                                <ul className="space-y-6 text-[12px] font-black uppercase tracking-widest text-slate-500">
-                                    <li><a href="#home" className="hover:text-white transition-colors">Home Page</a></li>
-                                    <li><a href="#about" className="hover:text-white transition-colors">Our Approach</a></li>
-                                    <li><a href="#reviews" className="hover:text-white transition-colors">Success Stories</a></li>
-                                </ul>
-                            </div>
-                            <div className="space-y-10">
-                                <h4 className="font-black text-white uppercase tracking-[0.3em] text-[11px]">Contact</h4>
-                                <ul className="space-y-6 text-[12px] font-black uppercase tracking-widest text-slate-500">
-                                    <li><a href="tel:+918077978440" className="text-white hover:text-blue-400 transition-colors">+91 8077978440</a></li>
-                                    <li><a href="#appointment" className="text-orange-500 hover:text-white transition-colors">Schedule Visit</a></li>
-                                    <li><span className="text-slate-700 italic lowercase font-medium">New Delhi, India</span></li>
-                                </ul>
-                            </div>
+                        <div className="grid grid-cols-2 lg:col-span-2 gap-12 w-full">
+                            <div className="space-y-8"><h4 className="font-black text-white uppercase tracking-widest text-[11px]">Links</h4><ul className="space-y-5 text-[12px] font-black uppercase tracking-widest text-slate-500"><li><a href="#home" className="hover:text-white transition-colors">Home Page</a></li><li><a href="#about" className="hover:text-white transition-colors">Approach</a></li><li><a href="#reviews" className="hover:text-white transition-colors">Success</a></li></ul></div>
+                            <div className="space-y-8"><h4 className="font-black text-white uppercase tracking-widest text-[11px]">Contact</h4><ul className="space-y-5 text-[12px] font-black uppercase tracking-widest text-slate-500"><li><a href="tel:+918077978440" className="text-white">+91 8077978440</a></li><li><a href="#appointment" className="text-orange-500">Book Visit</a></li><li><span className="lowercase">New Delhi, India</span></li></ul></div>
                         </div>
                     </div>
                 </div>
             </footer>
-        );
-
-        const Background = ({ videoSrc, darkMode }) => (
-            <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-                {videoSrc ? <video key={videoSrc} autoPlay loop muted playsInline className="h-full w-full object-cover opacity-60 dark:opacity-30"><source src={videoSrc} type="video/mp4" /></video> : <div className="mesh-gradient"></div>}
-                <div className={`absolute inset-0 transition-all duration-700 ${darkMode ? 'bg-slate-950/50' : 'bg-white/10'}`}></div>
-            </div>
-        );
-
-        const SettingsPanel = ({ isOpen, onClose, darkMode, setDarkMode, onVideoUpload, onVideoRemove, hasVideo }) => (
-            <div className={`fixed inset-y-0 right-0 z-[200] w-full sm:w-[400px] settings-panel p-10 sm:p-14 transition-all duration-500 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className="flex items-center justify-between mb-16">
-                    <h3 className="text-2xl font-[900] text-slate-900 dark:text-white tracking-tight">Display Config</h3>
-                    <button onClick={onClose} className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white">✕</button>
-                </div>
-                <div className="space-y-16">
-                    <div className="space-y-6">
-                        <label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Vibe Selection</label>
-                        <button onClick={() => setDarkMode(!darkMode)} className="w-full flex items-center justify-between p-7 rounded-[2rem] bg-slate-100/50 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700">
-                            <span className="font-bold text-slate-700 dark:text-white text-base">{darkMode ? 'Deep Mode' : 'Glow Mode'}</span>
-                            <div className={`h-7 w-12 rounded-full relative transition-colors ${darkMode ? 'bg-blue-600' : 'bg-slate-300'}`}><div className={`absolute top-1.5 h-4 w-4 bg-white rounded-full shadow-lg transition-all ${darkMode ? 'left-6.5' : 'left-1.5'}`}></div></div>
-                        </button>
-                    </div>
-                    <div className="space-y-6">
-                        <label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Visual Background</label>
-                        {!hasVideo ? (
-                            <div className="relative overflow-hidden group">
-                                <input type="file" accept="video/*" onChange={onVideoUpload} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
-                                <div className="w-full p-12 rounded-[3.5rem] border-3 border-dashed border-slate-200 dark:border-slate-800 flex flex-col items-center gap-5 bg-slate-50/50 dark:bg-slate-900/40"><span className="text-4xl opacity-50">📹</span><span className="text-[11px] font-black uppercase tracking-widest text-slate-500">Pick MP4 Video</span></div>
-                            </div>
-                        ) : (
-                            <button onClick={onVideoRemove} className="w-full p-7 rounded-[2rem] border border-red-200 bg-red-50 flex items-center justify-between"><span className="font-black text-red-600">Clear Video</span><span>🗑️</span></button>
-                        )}
-                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">Note: Local video files are temporary.</p>
-                    </div>
-                    <button onClick={onClose} className="w-full py-6 rounded-[2rem] bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black text-[11px] uppercase tracking-[0.25em]">Save & Exit</button>
-                </div>
-            </div>
         );
 
         const App = () => {
@@ -546,130 +336,40 @@
             const [loading, setLoading] = React.useState(false);
             const [formData, setFormData] = React.useState({ name: '', condition: '', review_text: '' });
             const [lastReviewDate, setLastReviewDate] = React.useState(null);
-
             const navItems = ["Home", "About", "Services", "Reviews", "Contact"];
-
             const services = [
-                { title: 'Back Pain', description: 'Natural structural alignment.', image: 'nuero.backpain.jpeg' },
-                { title: 'Gastro', description: 'Safe, non-surgical therapy.', image: 'nuero.gastro.jpeg' },
-                { title: 'Sciatica', description: 'Nerve compression relief.', image: 'nuero.sciatica.jpeg' },
-                { title: 'Cervical', description: 'Precision neck recovery.', image: 'nuero.cervical.jpeg' },
-                { title: 'Knee Pain', description: 'Complete joint mobility.', image: 'nuero.kneepain.jpeg' },
-                { title: 'Migraine', description: 'Chemical balance therapy.', image: 'nuero.migrane.jpeg' }
+                { title: 'Back Pain', desc: 'Natural structural alignment.', img: 'nuero.backpain.jpeg' },
+                { title: 'Gastro', desc: 'Safe, non-surgical therapy.', img: 'nuero.gastro.jpeg' },
+                { title: 'Sciatica', desc: 'Nerve compression relief.', img: 'nuero.sciatica.jpeg' },
+                { title: 'Cervical', desc: 'Precision neck recovery.', img: 'nuero.cervical.jpeg' },
+                { title: 'Knee Pain', desc: 'Complete joint mobility.', img: 'nuero.kneepain.jpeg' },
+                { title: 'Migraine', desc: 'Chemical balance therapy.', img: 'nuero.migrane.jpeg' }
             ];
-
             const fetchReviews = async () => {
-                setLoading(true);
-                if (supabase) {
-                    const { data, error } = await supabase
-                        .from('reviews')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-
-                    if (data) {
-                        setReviews(data);
-                        if (data[0]) {
-                            setLastReviewDate(new Date(data[0].created_at).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}));
-                        }
-                    }
-                } else {
-                    const local = JSON.parse(localStorage.getItem('painfree_reviews')) || [];
-                    setReviews(local);
-                }
-                setLoading(false);
+                if(supabase){ const {data}=await supabase.from('reviews').select('*').order('created_at',{ascending:false}); if(data){ setReviews(data); if(data[0]) setLastReviewDate(new Date(data[0].created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})); } }
+                else { setReviews(JSON.parse(localStorage.getItem('painfree_reviews')) || []); }
             };
-
             const submitReview = async () => {
-                setLoading(true);
-                const newR = { ...formData };
-                
-                if (supabase) {
-                    const { error } = await supabase.from('reviews').insert([newR]);
-                    if (!error) {
-                        setFormData({ name: '', condition: '', review_text: '' });
-                        fetchReviews();
-                    }
-                } else {
-                    const l = JSON.parse(localStorage.getItem('painfree_reviews')) || [];
-                    localStorage.setItem('painfree_reviews', JSON.stringify([{...newR, created_at: new Date().toISOString()}, ...l]));
-                    setFormData({ name: '', condition: '', review_text: '' });
-                    fetchReviews();
-                }
-                setLoading(false);
+                setLoading(true); if(supabase){ await supabase.from('reviews').insert([formData]); } else { const l=JSON.parse(localStorage.getItem('painfree_reviews'))||[]; localStorage.setItem('painfree_reviews',JSON.stringify([{...formData,created_at:new Date().toISOString()},...l])); }
+                setFormData({name:'',condition:'',review_text:''}); fetchReviews(); setLoading(false);
             };
-
-            const handleVideoUpload = (e) => {
-                const file = e.target.files[0];
-                if (file && file.type.startsWith('video/')) {
-                    if (videoSrc) URL.revokeObjectURL(videoSrc);
-                    setVideoSrc(URL.createObjectURL(file));
-                }
-            };
-
-            const handleVideoRemove = () => { if (videoSrc) URL.revokeObjectURL(videoSrc); setVideoSrc(null); };
-
-            React.useEffect(() => { 
-                fetchReviews(); 
-                setDarkMode(localStorage.getItem('painfree_dark') === 'true');
-            }, []);
-
-            React.useEffect(() => {
-                document.documentElement.className = darkMode ? 'dark' : '';
-                localStorage.setItem('painfree_dark', darkMode);
-            }, [darkMode]);
+            React.useEffect(()=>{ fetchReviews(); setDarkMode(localStorage.getItem('painfree_dark')==='true'); },[]);
+            React.useEffect(()=>{ document.documentElement.className=darkMode?'dark':''; localStorage.setItem('painfree_dark',darkMode); },[darkMode]);
 
             return (
                 <div className="min-h-screen text-slate-700 dark:text-slate-300">
-                    <Background videoSrc={videoSrc} darkMode={darkMode} />
-                    <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} darkMode={darkMode} setDarkMode={setDarkMode} onVideoUpload={handleVideoUpload} onVideoRemove={handleVideoRemove} hasVideo={!!videoSrc}/>
+                    <div className="fixed inset-0 z-[-1] pointer-events-none">{videoSrc ? <video key={videoSrc} autoPlay loop muted className="h-full w-full object-cover opacity-60 dark:opacity-30"><source src={videoSrc} type="video/mp4" /></video> : <div className="mesh-gradient"></div>}<div className={`absolute inset-0 ${darkMode ? 'bg-slate-950/50' : 'bg-white/10'}`}></div></div>
+                    {isSettingsOpen && <div className="fixed inset-y-0 right-0 z-[200] w-full sm:w-[400px] settings-panel p-10 sm:p-14 transition-all overflow-y-auto"><div className="flex items-center justify-between mb-16"><h3 className="text-2xl font-[900] text-slate-900 dark:text-white">Display Config</h3><button onClick={()=>setIsSettingsOpen(false)} className="h-12 w-12 flex items-center justify-center rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-white shadow-sm border border-slate-100 dark:border-slate-700">✕</button></div><div className="space-y-12"><button onClick={()=>setDarkMode(!darkMode)} className="w-full flex items-center justify-between p-7 rounded-[2.5rem] bg-slate-100/50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 flex items-center justify-between"><span className="font-bold">{darkMode ? 'Deep Mode' : 'Glow Mode'}</span><div className={`h-7 w-12 rounded-full relative ${darkMode ? 'bg-blue-600' : 'bg-slate-300'}`}><div className={`absolute top-1.5 h-4 w-4 bg-white rounded-full transition-all ${darkMode ? 'left-6.5' : 'left-1.5'}`}></div></div></button><div className="relative overflow-hidden p-12 rounded-[3.5rem] border-2 border-dashed border-slate-300 dark:border-slate-800 flex flex-col items-center gap-4 bg-slate-50/50 dark:bg-slate-900/30 group"><input type="file" accept="video/*" onChange={e=>{const f=e.target.files[0]; if(f&&f.type.startsWith('video/')){setVideoSrc(URL.createObjectURL(f))}}} className="absolute inset-0 opacity-0 cursor-pointer"/><span className="text-4xl">📹</span><span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Video Background</span></div><button onClick={()=>setIsSettingsOpen(false)} className="w-full py-6 rounded-[2.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-black text-xs uppercase tracking-[0.2em]">Close & Save</button></div></div>}
                     <Navbar navItems={navItems} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
                     <main>
-                        <Hero />
-                        <About />
-                        <section id="services" className="py-24 lg:py-40 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/80 to-white dark:via-slate-950/80 dark:to-slate-950"></div>
-                            <div className="relative mx-auto max-w-7xl px-4 lg:px-8 z-10">
-                                <div className="text-center mb-24 px-4">
-                                    <span className="font-black text-blue-600 dark:text-blue-400 uppercase tracking-[0.3em] text-[11px]">Specialized Care</span>
-                                    <h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Home-Based Clinical Excellence</h2>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
-                                    {services.map((item, idx) => (
-                                        <div key={idx} className="card-bg rounded-[3rem] overflow-hidden card-hover group shadow-2xl flex flex-col">
-                                            <div className="h-64 sm:h-72 overflow-hidden relative">
-                                                <img 
-                                                    src={item.image} 
-                                                    alt={item.title} 
-                                                    className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                                                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800'; }}
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                            </div>
-                                            <div className="p-10 flex-grow text-center">
-                                                <h3 className="font-[900] text-slate-900 dark:text-white text-2xl mb-4 tracking-tight">{item.title}</h3>
-                                                <p className="text-sm font-bold text-slate-600 dark:text-slate-400 leading-relaxed uppercase tracking-wider">{item.description}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </section>
-                        <section id="case-studies" className="py-24 lg:py-48 bg-slate-950 text-white relative">
-                            <div className="mx-auto max-w-7xl px-4 lg:px-8 grid gap-24 lg:grid-cols-2 lg:items-center">
-                                <div>
-                                    <span className="font-black text-orange-500 uppercase tracking-[0.3em] text-[11px]">Real Success</span>
-                                    <h2 className="mt-10 text-4xl sm:text-6xl lg:text-7xl font-[900] leading-[1.05] tracking-tight">Chronic Pain <br /><span className="text-blue-400 font-medium italic">Vanquished.</span></h2>
-                                    <p className="mt-12 text-lg sm:text-xl font-bold text-slate-300">Patient recovered from severe cervical radiculopathy without medication.</p>
-                                </div>
-                                <div className="aspect-square rounded-[4rem] overflow-hidden shadow-3xl bg-white/5 p-4 border border-white/10"><img src="nuero.about.jpeg" className="h-full w-full object-cover rounded-[3.5rem]" alt="Success Story" /></div>
-                            </div>
-                        </section>
+                        <Hero /><About />
+                        <section id="services" className="py-20 lg:py-40 relative"><div className="mx-auto max-w-7xl px-4 lg:px-8"><div className="text-center mb-16"><span className="font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest text-[11px]">Specialized Care</span><h2 className="mt-8 text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-slate-100 tracking-tight">Home-Based clinical Excellence</h2></div><div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">{services.map((s,i)=>(<div key={i} className="card-bg rounded-[2.5rem] overflow-hidden card-hover group shadow-xl flex flex-col"><div className="h-64 sm:h-72 overflow-hidden relative"><img src={s.img} alt={s.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" onError={e=>e.target.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800'}/><div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div></div><div className="p-10 flex-grow text-center"><h3 className="font-[900] text-slate-900 dark:text-white text-2xl mb-4 tracking-tight">{s.title}</h3><p className="text-sm font-bold text-slate-600 dark:text-slate-500 leading-relaxed uppercase tracking-wider">{s.desc}</p></div></div>))}</div></div></section>
+                        <section id="case-studies" className="py-20 lg:py-48 bg-slate-950 text-white"><div className="mx-auto max-w-7xl px-4 lg:px-8 grid gap-16 lg:grid-cols-2 lg:items-center"><div><span className="font-black text-orange-500 uppercase tracking-widest text-[11px]">Clinical Excellence</span><h2 className="mt-10 text-4xl sm:text-6xl lg:text-7xl font-[900] leading-tight tracking-tight">The <br /><span className="text-blue-400 font-medium italic">Healing Collective</span></h2><p className="mt-10 text-lg sm:text-xl font-bold text-slate-400 leading-relaxed">Certified Neurotherapists, Committed to Results — <br className="hidden sm:block" /> No Medicines. No Machines.</p></div><div className="aspect-square rounded-[3.5rem] overflow-hidden shadow-3xl bg-white/5 p-4 border border-white/10"><img src="nuero.about.jpeg" className="h-full w-full object-cover rounded-[3rem]" alt="Success Story" /></div></div></section>
                         <Reviews reviews={reviews} loading={loading} onSubmitReview={submitReview} formData={formData} setFormData={setFormData} lastReviewDate={lastReviewDate} />
                         <Appointment />
                     </main>
                     <Footer />
-                    <button onClick={() => setIsSettingsOpen(true)} className="fixed bottom-36 right-8 z-[150] h-16 w-16 bg-white dark:bg-slate-800 rounded-2xl shadow-3xl flex items-center justify-center border border-slate-100 dark:border-slate-700 active:scale-90 transition-all shadow-xl"><span className="text-3xl">⚙️</span></button>
-                                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" className="fixed bottom-10 right-8 z-[150] h-20 w-20 bg-emerald-500 rounded-[2.25rem] shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all text-white text-4xl">💬</a>
+                    <button onClick={() => setIsSettingsOpen(true)} className="fixed bottom-10 right-8 z-[150] h-16 w-16 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl flex items-center justify-center border border-slate-100 dark:border-slate-700 active:scale-90 transition-all shadow-xl"><span className="text-3xl">⚙️</span></button>
                 </div>
             );
         };
